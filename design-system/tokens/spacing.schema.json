@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design System Spacing Tokens",
+  "type": "object",
+  "properties": {
+    "base_unit": { "type": "number", "default": 4, "description": "Base spacing unit in px (4px grid)" },
+    "scale": {
+      "type": "object",
+      "properties": {
+        "0": { "type": "number", "default": 0 },
+        "1": { "type": "number", "default": 4 },
+        "2": { "type": "number", "default": 8 },
+        "3": { "type": "number", "default": 12 },
+        "4": { "type": "number", "default": 16 },
+        "5": { "type": "number", "default": 20 },
+        "6": { "type": "number", "default": 24 },
+        "7": { "type": "number", "default": 28 },
+        "8": { "type": "number", "default": 32 },
+        "9": { "type": "number", "default": 36 },
+        "10": { "type": "number", "default": 40 },
+        "11": { "type": "number", "default": 44 },
+        "12": { "type": "number", "default": 48 },
+        "14": { "type": "number", "default": 56 },
+        "16": { "type": "number", "default": 64 },
+        "20": { "type": "number", "default": 80 },
+        "24": { "type": "number", "default": 96 },
+        "28": { "type": "number", "default": 112 },
+        "32": { "type": "number", "default": 128 },
+        "36": { "type": "number", "default": 144 },
+        "40": { "type": "number", "default": 160 },
+        "44": { "type": "number", "default": 176 },
+        "48": { "type": "number", "default": 192 },
+        "52": { "type": "number", "default": 208 },
+        "56": { "type": "number", "default": 224 },
+        "60": { "type": "number", "default": 240 },
+        "64": { "type": "number", "default": 256 },
+        "72": { "type": "number", "default": 288 },
+        "80": { "type": "number", "default": 320 },
+        "96": { "type": "number", "default": 384 }
+      },
+      "additionalProperties": { "type": "number" }
+    },
+    "semantic": {
+      "type": "object",
+      "description": "Semantic spacing aliases for common use cases",
+      "properties": {
+        "inline_xs": { "type": "string", "default": "1" },
+        "inline_sm": { "type": "string", "default": "2" },
+        "inline_md": { "type": "string", "default": "3" },
+        "inline_lg": { "type": "string", "default": "4" },
+        "stack_xs": { "type": "string", "default": "2" },
+        "stack_sm": { "type": "string", "default": "3" },
+        "stack_md": { "type": "string", "default": "4" },
+        "stack_lg": { "type": "string", "default": "6" },
+        "stack_xl": { "type": "string", "default": "8" },
+        "stack_2xl": { "type": "string", "default": "12" },
+        "section_sm": { "type": "string", "default": "12" },
+        "section_md": { "type": "string", "default": "16" },
+        "section_lg": { "type": "string", "default": "24" },
+        "section_xl": { "type": "string", "default": "32" },
+        "container_padding": { "type": "string", "default": "6" },
+        "card_padding": { "type": "string", "default": "6" },
+        "button_padding_x": { "type": "string", "default": "6" },
+        "button_padding_y": { "type": "string", "default": "3" },
+        "input_padding_x": { "type": "string", "default": "4" },
+        "input_padding_y": { "type": "string", "default": "3" }
+      }
+    }
+  },
+  "required": ["base_unit", "scale", "semantic"]
+}

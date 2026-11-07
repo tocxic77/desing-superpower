@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design Superpowers Project Brief",
+  "type": "object",
+  "required": [
+    "project",
+    "business_goal",
+    "target_audience",
+    "primary_action",
+    "platform",
+    "approval_required"
+  ],
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "Project identifier (slug)",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "project_type": {
+      "type": "string",
+      "enum": ["landing-page", "website", "branding", "presentation", "social-campaign", "email-campaign", "report", "infographic"],
+      "default": "landing-page"
+    },
+    "business_goal": {
+      "type": "string",
+      "enum": ["generate_leads", "sell_product", "book_consultation", "download_asset", "signup_newsletter", "register_event", "brand_awareness", "educate_market"]
+    },
+    "target_audience": {
+      "type": "string",
+      "description": "Primary audience description (e.g., 'B2B decision makers in food manufacturing')"
+    },
+    "audience_segments": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Secondary audiences"
+    },
+    "primary_action": {
+      "type": "string",
+      "description": "Macro conversion action (e.g., 'request_consultation')"
+    },
+    "secondary_action": {
+      "type": "string",
+      "description": "Micro conversion action (e.g., 'view_case_studies')"
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["wordpress_elementor", "html_css", "figma", "pdf", "pptx", "social_media", "email_html"],
+      "description": "Primary build target"
+    },
+    "additional_platforms": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["wordpress_elementor", "html_css", "figma", "pdf", "pptx", "social_media", "email_html"] },
+      "description": "Additional delivery formats"
+    },
+    "brand_assets": {
+      "type": "object",
+      "properties": {
+        "logo_files": { "type": "array", "items": { "type": "string" } },
+        "color_palette": { "type": "object" },
+        "typography": { "type": "object" },
+        "guidelines_url": { "type": "string", "format": "uri" },
+        "existing_tokens": { "type": "boolean" }
+      },
+      "description": "Available brand assets (paths or references)"
+    },
+    "visual_direction": {
+      "type": "string",
+      "enum": ["premium_editorial", "clean_functional", "bold_experimental", "warm_approachable", "technical_precise", "minimal_zen"],
+      "description": "Aesthetic direction keyword"
+    },
+    "visual_references": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "description": "Moodboard / reference URLs"
+    },
+    "responsive": {
+      "type": "boolean",
+      "default": true
+    },
+    "accessibility": {
+      "type": "string",
+      "enum": ["WCAG_22_A", "WCAG_22_AA", "WCAG_22_AAA"],
+      "default": "WCAG_22_AA"
+    },
+    "performance_targets": {
+      "type": "object",
+      "properties": {
+        "lcp_ms": { "type": "integer", "default": 2500 },
+        "inp_ms": { "type": "integer", "default": 200 },
+        "cls": { "type": "number", "default": 0.1 }
+      }
+    },
+    "content": {
+      "type": "object",
+      "properties": {
+        "headline": { "type": "string" },
+        "subhead": { "type": "string" },
+        "body_sections": { "type": "array", "items": { "type": "object" } },
+        "cta_primary": { "type": "string" },
+        "cta_secondary": { "type": "string" },
+        "social_proof": { "type": "array", "items": { "type": "object" } },
+        "faq": { "type": "array", "items": { "type": "object" } }
+      },
+      "description": "Content provided (optional — Sales Specialist can generate)"
+    },
+    "approval_required": {
+      "type": "boolean",
+      "default": true,
+      "description": "Human approval required for production deployment"
+    },
+    "timeline": {
+      "type": "object",
+      "properties": {
+        "kickoff": { "type": "string", "format": "date" },
+        "first_draft": { "type": "string", "format": "date" },
+        "review": { "type": "string", "format": "date" },
+        "delivery": { "type": "string", "format": "date" }
+      }
+    },
+    "budget_tier": {
+      "type": "string",
+      "enum": ["starter", "professional", "enterprise"],
+      "default": "professional"
+    },
+    "success_criteria": {
+      "type": "object",
+      "properties": {
+        "conversion_rate_target": { "type": "number" },
+        "traffic_target": { "type": "integer" },
+        "quality_threshold": { "type": "string", "enum": ["standard", "high", "premium"] }
+      }
+    }
+  }
+}

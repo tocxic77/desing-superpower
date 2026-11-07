@@ -1,0 +1,20 @@
+{
+  "name": "design-superpowers-dev",
+  "description": "Development marketplace for Design Superpowers core skills library",
+  "owner": {
+    "name": "Mario Pennacchiotti",
+    "email": "mario@pennacchiotti.cl"
+  },
+  "plugins": [
+    {
+      "name": "design-superpowers",
+      "description": "Core skills library for autonomous design agents: visual design, UX, branding, editorial, conversion optimization with evidence-based validation loops",
+      "version": "1.0.0",
+      "source": "./",
+      "author": {
+        "name": "Mario Pennacchiotti",
+        "email": "mario@pennacchiotti.cl"
+      }
+    }
+  ]
+}

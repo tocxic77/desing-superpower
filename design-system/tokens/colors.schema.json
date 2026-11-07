@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design System Color Tokens",
+  "type": "object",
+  "description": "Color tokens with semantic roles and WCAG contrast verification",
+  "properties": {
+    "primitives": {
+      "type": "object",
+      "description": "Raw color values (never used directly in components)",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "value": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$|^#[0-9a-fA-F]{8}$" },
+          "name": { "type": "string" }
+        },
+        "required": ["value", "name"]
+      }
+    },
+    "semantic": {
+      "type": "object",
+      "description": "Semantic color roles (used in components)",
+      "properties": {
+        "background": {
+          "type": "object",
+          "properties": {
+            "primary": { "type": "string", "description": "Main page background" },
+            "secondary": { "type": "string", "description": "Card/section background" },
+            "tertiary": { "type": "string", "description": "Subtle background" },
+            "inverse": { "type": "string", "description": "Dark background for light content" }
+          },
+          "required": ["primary", "secondary", "tertiary", "inverse"]
+        },
+        "text": {
+          "type": "object",
+          "properties": {
+            "primary": { "type": "string", "description": "Main body text" },
+            "secondary": { "type": "string", "description": "Muted/supporting text" },
+            "inverse": { "type": "string", "description": "Text on dark backgrounds" },
+            "link": { "type": "string", "description": "Link text" },
+            "link_hover": { "type": "string", "description": "Link hover state" }
+          },
+          "required": ["primary", "secondary", "inverse", "link", "link_hover"]
+        },
+        "border": {
+          "type": "object",
+          "properties": {
+            "primary": { "type": "string", "description": "Default borders" },
+            "secondary": { "type": "string", "description": "Subtle borders" },
+            "focus": { "type": "string", "description": "Focus ring color" },
+            "error": { "type": "string", "description": "Error state borders" }
+          },
+          "required": ["primary", "secondary", "focus", "error"]
+        },
+        "cta": {
+          "type": "object",
+          "properties": {
+            "primary_bg": { "type": "string", "description": "Primary button background" },
+            "primary_text": { "type": "string", "description": "Primary button text" },
+            "primary_hover": { "type": "string", "description": "Primary button hover" },
+            "secondary_bg": { "type": "string", "description": "Secondary button background" },
+            "secondary_text": { "type": "string", "description": "Secondary button text" },
+            "secondary_hover": { "type": "string", "description": "Secondary button hover" },
+            "ghost_text": { "type": "string", "description": "Ghost button text" },
+            "ghost_hover": { "type": "string", "description": "Ghost button hover" }
+          },
+          "required": ["primary_bg", "primary_text", "primary_hover", "secondary_bg", "secondary_text", "secondary_hover", "ghost_text", "ghost_hover"]
+        },
+        "status": {
+          "type": "object",
+          "properties": {
+            "success_bg": { "type": "string" },
+            "success_text": { "type": "string" },
+            "warning_bg": { "type": "string" },
+            "warning_text": { "type": "string" },
+            "error_bg": { "type": "string" },
+            "error_text": { "type": "string" },
+            "info_bg": { "type": "string" },
+            "info_text": { "type": "string" }
+          },
+          "required": ["success_bg", "success_text", "warning_bg", "warning_text", "error_bg", "error_text", "info_bg", "info_text"]
+        },
+        "brand": {
+          "type": "object",
+          "properties": {
+            "primary": { "type": "string", "description": "Brand primary color" },
+            "secondary": { "type": "string", "description": "Brand secondary color" },
+            "accent": { "type": "string", "description": "Brand accent color" }
+          },
+          "required": ["primary", "secondary", "accent"]
+        }
+      },
+      "required": ["background", "text", "border", "cta", "status", "brand"]
+    },
+    "contrast_verification": {
+      "type": "object",
+      "description": "Pre-verified contrast ratios for semantic pairs",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "ratio": { "type": "number" },
+          "aa_normal": { "type": "boolean" },
+          "aa_large": { "type": "boolean" },
+          "aaa_normal": { "type": "boolean" },
+          "aaa_large": { "type": "boolean" }
+        },
+        "required": ["ratio", "aa_normal", "aa_large", "aaa_normal", "aaa_large"]
+      }
+    }
+  },
+  "required": ["primitives", "semantic", "contrast_verification"]
+}

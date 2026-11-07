@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design System Typography Tokens",
+  "type": "object",
+  "properties": {
+    "font_families": {
+      "type": "object",
+      "properties": {
+        "heading": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "weights": { "type": "array", "items": { "type": "integer" }, "default": [400, 500, 600, 700] },
+            "fallbacks": { "type": "array", "items": { "type": "string" }, "default": ["system-ui", "sans-serif"] },
+            "source": { "type": "string", "enum": ["google", "adobe", "self-hosted", "system"] }
+          },
+          "required": ["name", "weights", "fallbacks", "source"]
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "weights": { "type": "array", "items": { "type": "integer" }, "default": [400, 500, 600] },
+            "fallbacks": { "type": "array", "items": { "type": "string" }, "default": ["system-ui", "sans-serif"] },
+            "source": { "type": "string", "enum": ["google", "adobe", "self-hosted", "system"] }
+          },
+          "required": ["name", "weights", "fallbacks", "source"]
+        },
+        "mono": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "weights": { "type": "array", "items": { "type": "integer" }, "default": [400, 500] },
+            "fallbacks": { "type": "array", "items": { "type": "string" }, "default": ["ui-monospace", "monospace"] },
+            "source": { "type": "string", "enum": ["google", "adobe", "self-hosted", "system"] }
+          },
+          "required": ["name", "weights", "fallbacks", "source"]
+        }
+      },
+      "required": ["heading", "body", "mono"]
+    },
+    "scale": {
+      "type": "object",
+      "description": "Type scale using modular scale (ratio-based)",
+      "properties": {
+        "ratio": { "type": "number", "default": 1.25, "description": "Major third = 1.25, perfect fourth = 1.333, golden = 1.618" },
+        "base_size": { "type": "number", "default": 16, "description": "Base font size in px" },
+        "steps": {
+          "type": "object",
+          "properties": {
+            "display_xl": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "display_lg": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "display_md": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "display_sm": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "heading_xl": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "heading_lg": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "heading_md": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "heading_sm": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "body_lg": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "body_md": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "body_sm": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "caption": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] },
+            "button": { "type": "object", "properties": { "size": { "type": "number" }, "line_height": { "type": "number" }, "letter_spacing": { "type": "string" }, "weight": { "type": "integer" }, "font_family": { "type": "string", "enum": ["heading", "body", "mono"] } }, "required": ["size", "line_height", "letter_spacing", "weight", "font_family"] }
+          },
+          "required": ["display_xl", "display_lg", "display_md", "display_sm", "heading_xl", "heading_lg", "heading_md", "heading_sm", "body_lg", "body_md", "body_sm", "caption", "button"]
+        }
+      },
+      "required": ["ratio", "base_size", "steps"]
+    },
+    "responsive_overrides": {
+      "type": "object",
+      "description": "Breakpoint-specific scale adjustments",
+      "properties": {
+        "mobile": { "type": "object", "additionalProperties": { "type": "object" } },
+        "tablet": { "type": "object", "additionalProperties": { "type": "object" } },
+        "desktop": { "type": "object", "additionalProperties": { "type": "object" } }
+      }
+    }
+  },
+  "required": ["font_families", "scale", "responsive_overrides"]
+}

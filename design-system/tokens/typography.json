@@ -1,0 +1,61 @@
+{
+  "$schema": "./typography.schema.json",
+  "font_families": {
+    "heading": {
+      "name": "Inter",
+      "weights": [400, 500, 600, 700],
+      "fallbacks": ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+      "source": "google"
+    },
+    "body": {
+      "name": "Inter",
+      "weights": [400, 500, 600],
+      "fallbacks": ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+      "source": "google"
+    },
+    "mono": {
+      "name": "JetBrains Mono",
+      "weights": [400, 500],
+      "fallbacks": ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+      "source": "google"
+    }
+  },
+  "scale": {
+    "ratio": 1.25,
+    "base_size": 16,
+    "steps": {
+      "display_xl": { "size": 72, "line_height": 1.1, "letter_spacing": "-0.02em", "weight": 700, "font_family": "heading" },
+      "display_lg": { "size": 57, "line_height": 1.1, "letter_spacing": "-0.02em", "weight": 700, "font_family": "heading" },
+      "display_md": { "size": 45, "line_height": 1.15, "letter_spacing": "-0.01em", "weight": 600, "font_family": "heading" },
+      "display_sm": { "size": 36, "line_height": 1.2, "letter_spacing": "-0.01em", "weight": 600, "font_family": "heading" },
+      "heading_xl": { "size": 30, "line_height": 1.25, "letter_spacing": "0", "weight": 600, "font_family": "heading" },
+      "heading_lg": { "size": 24, "line_height": 1.3, "letter_spacing": "0", "weight": 600, "font_family": "heading" },
+      "heading_md": { "size": 20, "line_height": 1.35, "letter_spacing": "0", "weight": 600, "font_family": "heading" },
+      "heading_sm": { "size": 18, "line_height": 1.4, "letter_spacing": "0", "weight": 600, "font_family": "heading" },
+      "body_lg": { "size": 18, "line_height": 1.6, "letter_spacing": "0", "weight": 400, "font_family": "body" },
+      "body_md": { "size": 16, "line_height": 1.6, "letter_spacing": "0", "weight": 400, "font_family": "body" },
+      "body_sm": { "size": 14, "line_height": 1.5, "letter_spacing": "0", "weight": 400, "font_family": "body" },
+      "caption": { "size": 12, "line_height": 1.5, "letter_spacing": "0.01em", "weight": 500, "font_family": "body" },
+      "button": { "size": 16, "line_height": 1.5, "letter_spacing": "0.02em", "weight": 600, "font_family": "body" }
+    }
+  },
+  "responsive_overrides": {
+    "mobile": {
+      "display_xl": { "size": 48, "line_height": 1.15 },
+      "display_lg": { "size": 38, "line_height": 1.2 },
+      "display_md": { "size": 30, "line_height": 1.25 },
+      "display_sm": { "size": 24, "line_height": 1.3 },
+      "heading_xl": { "size": 24, "line_height": 1.3 },
+      "heading_lg": { "size": 20, "line_height": 1.35 },
+      "heading_md": { "size": 18, "line_height": 1.4 },
+      "body_lg": { "size": 16, "line_height": 1.6 },
+      "body_md": { "size": 16, "line_height": 1.6 }
+    },
+    "tablet": {
+      "display_xl": { "size": 60, "line_height": 1.1 },
+      "display_lg": { "size": 48, "line_height": 1.15 },
+      "display_md": { "size": 38, "line_height": 1.2 }
+    },
+    "desktop": {}
+  }
+}

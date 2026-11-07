@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design Plan",
+  "type": "object",
+  "description": "Consolidated execution plan from all specialist agents",
+  "properties": {
+    "project": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "version": { "type": "integer", "default": 1 },
+    "brief_ref": { "type": "string" },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "route": { "type": "string" },
+          "sections": { "type": "array", "items": { "type": "string" } },
+          "components": { "type": "array", "items": { "type": "string" } },
+          "priority": { "type": "integer", "default": 1 }
+        },
+        "required": ["name", "route", "sections", "components"]
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string", "enum": ["atom", "molecule", "organism", "template", "page"] },
+          "variants": { "type": "array", "items": { "type": "string" } },
+          "states": { "type": "array", "items": { "type": "string" } },
+          "responsive": { "type": "boolean", "default": true },
+          "accessibility_notes": { "type": "string" },
+          "token_refs": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["name", "type", "variants", "states"]
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "description": "Token versions locked for this project",
+      "properties": {
+        "colors": { "type": "string" },
+        "typography": { "type": "string" },
+        "spacing": { "type": "string" },
+        "shadows": { "type": "string" },
+        "breakpoints": { "type": "string" },
+        "border_radius": { "type": "string" },
+        "z_index": { "type": "string" }
+      }
+    },
+    "content": {
+      "type": "object",
+      "properties": {
+        "copy_blocks": { "type": "array", "items": { "type": "object" } },
+        "cta_specs": { "type": "array", "items": { "type": "object" } },
+        "social_proof": { "type": "array", "items": { "type": "object" } },
+        "media_assets": { "type": "array", "items": { "type": "object" } }
+      }
+    },
+    "validation_thresholds": {
+      "type": "object",
+      "properties": {
+        "contrast_aa_normal": { "type": "number", "default": 4.5 },
+        "contrast_aa_large": { "type": "number", "default": 3.0 },
+        "lcp_ms": { "type": "integer", "default": 2500 },
+        "inp_ms": { "type": "integer", "default": 200 },
+        "cls": { "type": "number", "default": 0.10 },
+        "conversion_min_score": { "type": "integer", "default": 70 }
+      }
+    },
+    "platform_config": {
+      "type": "object",
+      "properties": {
+        "target": { "type": "string", "enum": ["wordpress_elementor", "html_css", "figma", "pdf", "pptx"] },
+        "staging_url": { "type": "string", "format": "uri" },
+        "elementor_version": { "type": "string" },
+        "theme": { "type": "string" },
+        "plugins": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "success_criteria": {
+      "type": "object",
+      "properties": {
+        "quality_gates": { "type": "array", "items": { "type": "string" } },
+        "conversion_target": { "type": "number" },
+        "delivery_date": { "type": "string", "format": "date" }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "impact": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+          "mitigation": { "type": "string" }
+        },
+        "required": ["id", "description", "impact", "mitigation"]
+      }
+    }
+  },
+  "required": ["project", "created_at", "brief_ref", "pages", "components", "tokens", "validation_thresholds", "platform_config"]
+}

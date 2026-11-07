@@ -1,0 +1,93 @@
+# Design Superpowers — Hermes Integration Config
+profile: design-superpowers
+version: "0.1.0"
+
+# Agent configurations (loaded from .hermes/agents/*.yaml)
+agents:
+  - orchestrator
+  - art-director
+  - ux-designer
+  - web-builder
+  - brand-designer
+  - sales-specialist
+  - design-critic
+
+# Workflow definitions (loaded from .hermes/workflows/*.md)
+workflows:
+  - new-project
+  - website-production
+  - branding-production
+  - presentation-production
+  - design-loop
+
+# Policy enforcement
+policies:
+  - security
+  - brand-integrity
+  - quality-gates
+  - approval-rules
+
+# MCP servers
+mcp:
+  design_orchestrator:
+    command: "python"
+    args: ["-m", "tools.orchestrator.design_loop"]
+    env: {}
+  wordpress_elementor:
+    command: "node"
+    args: ["tools/mcp/wordpress_elementor/index.js"]
+    env:
+      WP_URL: "${WP_URL}"
+      WP_USERNAME: "${WP_USERNAME}"
+      WP_APP_PASSWORD: "${WP_APP_PASSWORD}"
+  figma:
+    command: "node"
+    args: ["tools/mcp/figma/index.js"]
+    env:
+      FIGMA_ACCESS_TOKEN: "${FIGMA_ACCESS_TOKEN}"
+  browser:
+    command: "python"
+    args: ["-m", "tools.mcp.browser"]
+    env: {}
+  analytics:
+    command: "node"
+    args: ["tools/mcp/analytics/index.js"]
+    env:
+      GA4_MEASUREMENT_ID: "${GA4_MEASUREMENT_ID}"
+      GA4_API_SECRET: "${GA4_API_SECRET}"
+  asset_manager:
+    command: "python"
+    args: ["-m", "tools.mcp.asset_manager"]
+    env: {}
+
+# Validation thresholds (can be overridden by .env)
+validation:
+  accessibility:
+    contrast_aa_normal: 4.5
+    contrast_aa_large: 3.0
+    contrast_ui: 3.0
+    touch_target_min: 44
+  performance:
+    lcp_ms: 2500
+    inp_ms: 200
+    cls: 0.10
+  visual:
+    overflow_tolerance: 0
+    regression_threshold: 0.05
+
+# Design loop settings
+design_loop:
+  max_iterations: 5
+  max_issue_retries: 3
+  auto_fix:
+    high: true
+    medium: true
+    low: false
+
+# Output directories
+paths:
+  runs: "./runs"
+  reports: "./reports"
+  screenshots: "./runs/screenshots"
+  assets: "./assets"
+  design_system: "./design-system"

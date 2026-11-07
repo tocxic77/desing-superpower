@@ -1,0 +1,51 @@
+{
+  "name": "design-superpowers",
+  "version": "1.0.0",
+  "description": "An autonomous agentic design framework for visual design, UX, branding, editorial, and conversion-focused deliverables with evidence-based validation and multi-agent orchestration.",
+  "author": {
+    "name": "Mario Pennacchiotti",
+    "email": "mario@pennacchiotti.cl",
+    "url": "https://github.com/mariopennacchiotti"
+  },
+  "homepage": "https://github.com/mariopennacchiotti/design-superpowers",
+  "repository": "https://github.com/mariopennacchiotti/design-superpowers",
+  "license": "MIT",
+  "keywords": [
+    "design",
+    "autonomous-agents",
+    "visual-design",
+    "ux",
+    "branding",
+    "conversion-optimization",
+    "design-systems",
+    "multi-agent",
+    "evidence-based-design"
+  ],
+  "skills": "./skills/",
+  "hooks": {},
+  "interface": {
+    "displayName": "Design Superpowers",
+    "shortDescription": "Autonomous design agents with validation loops for landing pages, branding, presentations, and editorial design",
+    "longDescription": "Design Superpowers provides a multi-agent architecture for design work: Orchestrator coordinates, Art Director sets visual direction, UX Designer architects experience, Web Builder implements in Elementor/HTML/Figma, Brand Designer develops identity systems, Sales Specialist optimizes conversion, and Design Critic independently audits with evidence-based validators (contrast, accessibility, performance, visual regression, responsive, conversion). Features design loops with auto-correction, staging-only builds, and token-governed design systems.",
+    "developerName": "Mario Pennacchiotti",
+    "category": "Design Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "I need a landing page that converts for my B2B service.",
+      "Design a brand identity system for my company.",
+      "Create an executive presentation from this brief.",
+      "Audit this design for accessibility and conversion."
+    ],
+    "websiteURL": "https://github.com/mariopennacchiotti/design-superpowers",
+    "privacyPolicyURL": "https://github.com/mariopennacchiotti/design-superpowers/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/mariopennacchiotti/design-superpowers/blob/main/TERMS.md",
+    "brandColor": "#3B82F6",
+    "composerIcon": "./assets/design-superpowers-icon.svg",
+    "logo": "./assets/app-icon.png",
+    "screenshots": []
+  }
+}

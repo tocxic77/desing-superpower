@@ -1,0 +1,20 @@
+{
+  "z_index": {
+    "base": 0,
+    "dropdown": 100,
+    "sticky": 200,
+    "modal_backdrop": 300,
+    "modal": 400,
+    "popover": 500,
+    "tooltip": 600,
+    "toast": 700,
+    "focus_trap": 800
+  },
+  "semantic": {
+    "header": "sticky",
+    "footer": "base",
+    "sidebar": "sticky",
+    "mobile_nav": "modal",
+    "cookie_banner": "toast"
+  }
+}
