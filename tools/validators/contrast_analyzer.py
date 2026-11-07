@@ -13,6 +13,7 @@ WCAG 2.2 AA thresholds:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import re
@@ -308,11 +309,14 @@ def make_diagnostic(
     is_large_text: bool = False,
 ) -> ContrastDiagnostic:
     """Create a diagnostic from a contrast failure."""
-    from datetime import datetime
+    from datetime import datetime, timezone
 
     passes = ratio >= required_ratio
     severity = "critical" if not passes and required_ratio >= 4.5 else "high"
-    issue_num = hash(f"{run_id}:{element}") % 1000
+    # SHA-256 (no hash()): hash() está salteado por PYTHONHASHSEED y cambia entre
+    # procesos, así que el mismo run_id+element producía distinto issue_id en cada corrida.
+    digest = hashlib.sha256(f"{run_id}:{element}".encode("utf-8")).digest()
+    issue_num = int.from_bytes(digest[:4], "big") % 1000
     issue_id = f"A11Y-{issue_num:03d}"
 
     # Build suggested action from token suggestions
@@ -347,7 +351,7 @@ def make_diagnostic(
         regression_check=[element],
         evidence={},
         validator="contrast_analyzer",
-        timestamp=datetime.utcnow().isoformat() + "Z",
+        timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     )
 
 

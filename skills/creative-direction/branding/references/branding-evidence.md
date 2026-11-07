@@ -6,6 +6,58 @@
 
 ---
 
+## 0. ANCLAS CITABLES — formato estable
+
+Cada entrada se cita como `branding-evidence.md#<ancla>`. Sólo los encabezados de esta sección son anclas válidas; el ejemplo de la sección 5 no cuenta como ancla.
+
+### pearson-archetypes
+**Referencia**: Pearson, M. y Mark, C. (1998/2017). *The Hero and the Outlaw*.
+**Concepto**: 12 arquetipos de marca como sistema de significado; el arquetipo define motivación y tono.
+**Aplicación**: `dec-brand-001` y `dec-brand-002` (arquetipo primario y secundario). Requiere aprobación humana.
+**Tipo**: THEORY
+
+### marquardt-wheel
+**Referencia**: Marquardt, M. (2009/2015). *The Brand Archetype Wheel*.
+**Concepto**: Rueda de arquetipos agrupados por eje (orden, dominio, pertenencia, estabilidad).
+**Aplicación**: Contraste de arquetipos y coherencia con la categoría del cliente.
+**Tipo**: THEORY
+
+### aaker-identity
+**Referencia**: Aaker, D. A. (1996/2010). *Building Strong Brands*.
+**Concepto**: Brand identity system: core identity y extended identity; dimensiones de personalidad de marca.
+**Aplicación**: `dec-brand-003` (personalidad).
+**Tipo**: THEORY
+
+### kapferer-prism
+**Referencia**: Kapferer, J.-N. (1992/2012). *The New Strategic Brand Management*.
+**Concepto**: Brand Identity Prism: Physique, Personality, Culture, Relationship, Reflection, Self-image.
+**Aplicación**: `dec-brand-005` (posicionamiento) y espacios de marca en la composición.
+**Tipo**: THEORY
+
+### keller-cbbe
+**Referencia**: Keller, K. L. (1993/2013). *Strategic Brand Management*.
+**Concepto**: CBBE: saliencia, desempeño, imagen, juicios, sentimientos, resonancia.
+**Aplicación**: Jerarquía de brand equity para decidir qué se comunica primero.
+**Tipo**: THEORY
+
+### wheeler-process
+**Referencia**: Wheeler, A. (2003/2017). *Designing Brand Identity*.
+**Concepto**: Proceso research, strategy, identity, touchpoints, assets, governance.
+**Aplicación**: `dec-brand-008` (gobernanza de marca).
+**Tipo**: THEORY
+
+### neumeier-gap
+**Referencia**: Neumeier, M. (2006/2015). *The Brand Gap*.
+**Concepto**: La marca es lo que el cliente dice que es; diferenciación por enfoque, no por atributos.
+**Aplicación**: Criterio para tagline y esencia (`dec-brand-006`).
+**Tipo**: THEORY
+
+### sin-evidencia-empirica-branding
+**Referencia**: Declaración de vacío (sección 2).
+**Concepto**: No hay literatura 2020+ controlada que demuestre causalidad entre arquetipo o identidad de marca y conversión con hallazgo coincidente.
+**Aplicación**: Toda decisión de marca se marca THEORY y exige `human_review_required: true`.
+**Tipo**: DECLARACIÓN
+
 ## 1. TEORÍA DISCIPLINAR — Criterio de Decisión (No Evidencia de Conversión)
 
 | Referencia | Concepto Clave | Aplicación en Skill | Tipo |

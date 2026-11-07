@@ -6,6 +6,64 @@
 
 ---
 
+## 0. ANCLAS CITABLES — formato estable
+
+Cada entrada se cita como `typography-evidence.md#<ancla>`. Sólo los encabezados de esta sección son anclas válidas; el ejemplo de la sección 5 no cuenta como ancla.
+
+### bringhurst-scale
+**Referencia**: Bringhurst, R. (2004). *The Elements of Typographic Style* (v3.2).
+**Concepto**: Escalas modulares con ratios armónicos (1.25, 1.333, 1.414, 1.5, 1.618).
+**Aplicación**: Definición de type scale ratio (base 16px, ratio 1.25 o 1.333).
+**Tipo**: THEORY
+
+### tschichold-hierarchy
+**Referencia**: Tschichold, J. (1928/1991). *The New Typography*.
+**Concepto**: Jerarquía por peso, tamaño y espacio; asimetría controlada.
+**Aplicación**: Roles semánticos heading, body, label, caption por peso visual, no sólo tamaño.
+**Tipo**: THEORY
+
+### muller-brockmann-baseline
+**Referencia**: Müller-Brockmann, J. (1981). *Grid Systems in Graphic Design*.
+**Concepto**: Baseline grid; leading como unidad rítmica.
+**Aplicación**: Line-height por paso de escala y alineación vertical.
+**Tipo**: THEORY
+
+### material-type-scale
+**Referencia**: Google Material Design (2014-2024). *Type System*.
+**Concepto**: Type scale de 13 pasos, familias y naming de tokens.
+**Aplicación**: Estructura de `typography.semantic.*`.
+**Tipo**: THEORY
+
+### apple-hig-type
+**Referencia**: Apple Human Interface Guidelines (2024). *Typography*.
+**Concepto**: Dynamic Type, escalado accesible, SF Pro variable.
+**Aplicación**: Escala responsive y fallbacks de system font.
+**Tipo**: THEORY
+
+### css-fonts-4
+**Referencia**: W3C CSS Fonts Module Level 4 (2023).
+**Concepto**: Ejes de variable fonts (wght, wdth, opsz, slnt) y `font-optical-sizing`.
+**Aplicación**: Detección de soporte de variable fonts; single-axis vs multi-axis.
+**Tipo**: THEORY
+
+### variable-font-support
+**Referencia**: W3C CSS Fonts 4 + soporte de plataforma.
+**Concepto**: Un archivo variable cubre el rango de pesos; el soporte depende de plataforma (Elementor = Custom CSS, Figma = nativo).
+**Aplicación**: Clasificación de feasibility de `dec-typography-005`.
+**Tipo**: THEORY (feasibility)
+
+### wcag-text-spacing
+**Referencia**: WCAG 2.2 SC 1.4.12 (2023). *Text Spacing*.
+**Concepto**: letter-spacing, word-spacing, line-height y paragraph spacing mínimos para accesibilidad.
+**Aplicación**: Tokens de text spacing. Validación en FASE 5.
+**Tipo**: THEORY (metodológica)
+
+### sin-evidencia-empirica-typography
+**Referencia**: Declaración de vacío (sección 2).
+**Concepto**: Ningún estudio 2020+ verificado con hallazgo exacto para font family, line-height, base size o carga de fuentes frente a conversión.
+**Aplicación**: Toda decisión tipográfica se marca THEORY.
+**Tipo**: DECLARACIÓN
+
 ## 1. TEORÍA DISCIPLINAR — Criterio de Decisión (No Evidencia de Conversión)
 
 | Referencia | Concepto Clave | Aplicación en Skill | Tipo |

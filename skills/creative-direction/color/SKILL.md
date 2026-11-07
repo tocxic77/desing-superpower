@@ -83,7 +83,7 @@ Para cada decisión de color, emitir objeto válido contra `design-decision-sche
     "elementor": {"widget": "Button", "custom_css_needed": false, "theme_style_mapping": "Global Color Primary"},
     "figma": {"component_name": "Button/Primary", "variable_collection": "Brand", "variant_props": ["variant", "size", "state"]}
   },
-  "evidence_refs": ["skills/creative-direction/color/references/color-evidence.md#kohavi-2025-cta-color"],
+  "evidence_refs": ["skills/creative-direction/color/references/color-evidence.md#heller-2000"],
   "alternatives_considered": [],
   "references": {},
   "provisional": false,

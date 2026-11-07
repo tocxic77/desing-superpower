@@ -15,6 +15,10 @@
       "lint": "eslint . --ext .ts",
       "format": "prettier --write .",
       "validate:contrast": "python -m tools.validators.contrast_analyzer",
+      "validate:anchors": "python tools/validators/verify_evidence_anchors.py",
+      "validate:feasibility": "python skills/production/feasibility/scripts/verify-feasibility-refs.py",
+      "validate:editorial": "python skills/creative-direction/editorial/scripts/verify-editorial-coherence.py",
+      "test:py": "python -m pytest tests -q",
       "mcp:design_orchestrator": "python -m tools.orchestrator.design_loop"
     },
   "dependencies": {

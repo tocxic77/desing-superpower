@@ -1,5 +1,7 @@
 # Workflow: Design Loop (Auto-Correction Engine)
 
+> **Estado**: DOCUMENTADO — NO IMPLEMENTADO. El único validador real es el de contraste (`tools/validators/contrast_analyzer.py`); no existe runner del loop, ni contador de ciclos, ni motor de corrección. Ver README § Implementation Status.
+
 ## Purpose
 The core auto-correction loop that separates building from validating, enabling autonomous quality improvement.
 
@@ -59,27 +61,30 @@ validators = [
 
 ## Diagnostic Schema (Per Issue)
 
+El contrato es `templates/diagnostic-schema.json` (`additionalProperties: false`). Este ejemplo valida contra él:
+
 ```json
 {
-  "issue_id": "A11Y-004",
-  "cycle": 1,
-  "validator": "contrast",
+  "run_id": "2026-11-07_acme-landing_01",
+  "issue_id": "A11Y-417",
+  "validator": "contrast_analyzer",
   "category": "accessibility",
   "severity": "high",
   "element": ".hero__subtitle",
-  "selector": "css selector or xpath",
-  "problem": "Insufficient contrast ratio",
+  "problem": "Contrast ratio 3.00:1 fails WCAG AA normal text threshold (4.5:1)",
   "measured_value": 3.0,
   "required_value": 4.5,
-  "unit": "ratio",
-  "suggested_action": "Darken background overlay from 40% to 60%",
+  "suggested_action": "Darken .hero__subtitle from #6B7280 to #4B5563",
   "scope": "hero-section",
   "auto_fix_allowed": true,
   "verification_required": true,
-  "affects_tokens": false,
-  "token_references": []
+  "brand_constraint": "colors.semantic.text.primary",
+  "regression_check": [".hero__subtitle"],
+  "timestamp": "2026-11-07T22:41:09.512Z"
 }
 ```
+
+Campos que el schema **rechaza** (estuvieron en una versión anterior de este ejemplo): `cycle`, `selector`, `unit`, `affects_tokens`, `token_references`. El ciclo vive en el log (`design-loop-log.json`), no en el diagnóstico; la unidad va implícita en `measured_value`/`required_value`. `issue_id` se deriva de `run_id` + `element` con SHA-256 truncado, así que es estable entre corridas (`tests/validators/test_contrast_analyzer.py`).
 
 ## Correction Engine
 

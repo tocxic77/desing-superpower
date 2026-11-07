@@ -1,0 +1,2 @@
+# Scripts de shell deben conservar LF: con CRLF el shebang falla al ejecutarse
+*.sh text eol=lf

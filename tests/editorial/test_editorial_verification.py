@@ -11,6 +11,7 @@ Cubre:
 Ejecutar: pytest tests/editorial -q
 """
 
+# anchor-check: ignore — este test construye a propósito un evidence_ref roto
 
 import json
 import subprocess

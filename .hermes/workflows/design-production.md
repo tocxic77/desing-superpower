@@ -6,6 +6,25 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 
 ---
 
+## ESTADO DE IMPLEMENTACIÓN (leer antes de ejecutar)
+
+Este workflow es **especificación**, no runtime. Ningún agente ejecuta estas fases de punta a punta hoy.
+
+| Fase | Estado | Qué existe realmente |
+|---|---|---|
+| FASE 1 Brief | DOCUMENTADO | `brief-schema.json` + validación manual |
+| FASE 2 Feasibility | DOCUMENTADO (verificador sí) | `verify-feasibility-refs.py` / `verify.sh` validan un report **ya escrito**; nadie lo produce |
+| FASE 3.1 Branding gate | PARCIAL | reglas de gate + verificación de `brand-approval.json`; el especialista se ejecuta a mano |
+| FASE 3.2 Creative decisions | PARCIAL | schema v0.2 + `verify-editorial-coherence.py` sobre decisiones ya emitidas |
+| FASE 4 Build | DOCUMENTADO, NO IMPLEMENTADO | no hay builder Elementor/Figma ni automatización de staging |
+| FASE 5 Validation | DOCUMENTADO, NO IMPLEMENTADO | sólo `contrast_analyzer.py` es real; Lighthouse/a11y/responsive/visual-regression no |
+| FASE 6 Correction | DOCUMENTADO, NO IMPLEMENTADO | no hay motor de corrección ni control de ciclos |
+| FASE 7 Approval | DOCUMENTADO, NO IMPLEMENTADO | sólo plantilla de reporte |
+
+Regla: una fase **no** se considera ejecutada porque este documento la describa. Si el artefacto de salida no existe en disco, la fase no ocurrió.
+
+---
+
 ## FASE 1 — BRIEF INTERPRETATION
 
 | | |
@@ -27,6 +46,8 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 ---
 
 ## FASE 2 — PRODUCTION FEASIBILITY
+
+> **Estado**: DOCUMENTADO — NO IMPLEMENTADO. El verificador (`verify.sh` → `verify-feasibility-refs.py`) comprueba un report existente; ningún agente lo genera.
 
 | | |
 |---|---|
@@ -52,6 +73,8 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 ---
 
 ## FASE 3.1 — BRANDING GATE (NUEVO)
+
+> **Estado**: PARCIAL — las reglas del gate y la verificación de `brand-approval.json` son reales; el especialista de branding se ejecuta a mano, sin productor automático.
 
 **Propósito**: Validar output del branding skill (`brand-identity.json` o `draft-brand-identity.json`) antes de permitir que Color/Typography/Builder usen decisiones de marca.
 
@@ -139,6 +162,8 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 
 ## FASE 3.2 — CREATIVE DECISIONS (Color, Typography, Editorial, Layout, Interaction)
 
+> **Estado**: PARCIAL — schema v0.2 + verificadores cross-layer reales sobre decisiones ya emitidas; la orquestación entre especialistas no está implementada.
+
 | | |
 |---|---|
 | **Skills** | `creative-direction/{color,typography,editorial,layout,interaction}` (según `specialist-list.json`) |
@@ -171,6 +196,8 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 
 ## FASE 4 — BUILD
 
+> **Estado**: DOCUMENTADO — NO IMPLEMENTADO. No existe builder Elementor/Figma ni automatización de staging en este repo.
+
 | | |
 |---|---|
 | **Skill** | `core/design-orchestration` (modo build) |
@@ -193,6 +220,8 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 
 ## FASE 5 — VALIDATION (INDEPENDIENTE)
 
+> **Estado**: DOCUMENTADO — NO IMPLEMENTADO, salvo contraste. `tools/validators/contrast_analyzer.py` es real y testeado; Lighthouse, a11y, responsive y visual regression no existen. El fan-out con `delegate_task` no está cableado.
+
 | | |
 |---|---|
 | **Skill** | `core/design-critique` |
@@ -214,6 +243,8 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 ---
 
 ## FASE 6 — CORRECTION LOOP
+
+> **Estado**: DOCUMENTADO — NO IMPLEMENTADO. No hay motor de corrección, ni contador de ciclos, ni reintentos automáticos.
 
 | | |
 |---|---|
@@ -242,6 +273,8 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 ---
 
 ## FASE 7 — HUMAN APPROVAL GATE
+
+> **Estado**: DOCUMENTADO — NO IMPLEMENTADO. Sólo existe `templates/final-report-template.md`; no hay runtime de aprobación.
 
 | | |
 |---|---|
