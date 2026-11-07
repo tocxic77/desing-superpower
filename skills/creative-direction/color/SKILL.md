@@ -64,15 +64,16 @@ Para cada color de marca:
 - Cada uno → `feasibility_ref` a "Global Colors/Variables" (green)
 
 ### Paso 6 — Generar Decisiones (Output)
-Para cada decisión de color, emitir objeto válido contra `design-decision-schema.json`:
+Para cada decisión de color, emitir objeto válido contra `design-decision-schema.json` (v0.2):
 
 ```json
 {
   "specialist": "color",
+  "category": "color",
   "decision_id": "dec-color-001",
   "decision": "Establecer brand/primary/600 (#2563EB) como cta.primary_bg",
-  "rationale": "Kohavi 2025: blue primary CTA +12% conversión vs neutral; brand consistency. Feasibility: Elementor Global Color + Figma Variable = green",
-  "owner": "Art Director",
+  "rationale": "Kohavi 2025: blue primary CTA +12% conversión vs neutral; brand consistency. Feasibility: Elementor Global Color + Figma Variable = green. Sin evidencia empírica verificada de color específico → CTR.",
+  "owner": "art-director",
   "constraints": ["WCAG 2.2 AA contrast vs white text (validado en FASE 5)", "Elementor Theme Style mapping 1:1"],
   "feasibility_ref": "dec-color-001",
   "validation_required": ["contrast", "a11y"],
@@ -82,9 +83,15 @@ Para cada decisión de color, emitir objeto válido contra `design-decision-sche
     "elementor": {"widget": "Button", "custom_css_needed": false, "theme_style_mapping": "Global Color Primary"},
     "figma": {"component_name": "Button/Primary", "variable_collection": "Brand", "variant_props": ["variant", "size", "state"]}
   },
-  "evidence_refs": ["skills/creative-direction/color/references/color-evidence.md#kohavi-2025-cta-color"]
+  "evidence_refs": ["skills/creative-direction/color/references/color-evidence.md#kohavi-2025-cta-color"],
+  "alternatives_considered": [],
+  "references": {},
+  "provisional": false,
+  "depends_on": []
 }
 ```
+
+**Propiedad de la decisión**: `specialist` = quien produce (este skill: `color`), `category` = dominio de la decisión, `owner` = rol accountable que aprueba (`art-director`). No colapsar los tres — ver `templates/DECISION-FIELDS.md`.
 
 **Regla de viabilidad**: Si una decisión propuesta no tiene `feasibility_ref` válido (green/yellow) → **no emitirla**. En su lugar:
 - Marcar `human_review_required: true` en decisión alternativa

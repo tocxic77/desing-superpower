@@ -152,6 +152,20 @@ for decision in $(jq -c '.[]' "$DECISIONS_PATH"); do
         echo "❌ DECISIÓN $DECISION_ID: feasibility_ref apunta a clasificación 'red'"
         ERRORS=$((ERRORS + 1))
     fi
+
+    # 4d. Forma v0.2 (schema canónico): campos de propiedad y requeridos presentes
+    for FIELD in specialist category owner constraints; do
+        VALUE=$(echo "$decision" | jq -r ".$FIELD // empty")
+        if [ -z "$VALUE" ]; then
+            echo "❌ DECISIÓN $DECISION_ID: falta campo requerido v0.2 '$FIELD'"
+            ERRORS=$((ERRORS + 1))
+        fi
+    done
+    SPECIALIST=$(echo "$decision" | jq -r '.specialist // empty')
+    if [ "$SPECIALIST" = "art-director" ]; then
+        echo "❌ DECISIÓN $DECISION_ID: specialist='art-director' (el productor va en specialist; el aprobador en owner)"
+        ERRORS=$((ERRORS + 1))
+    fi
 done
 
 # 5. Cobertura: feasibility-report debe cubrir todos los requisitos del brief
@@ -171,7 +185,21 @@ else
 fi
 ```
 
-### Versión Python (para integración en Design Critic / Orchestrator)
+### Versión Python (canónica — sin dependencia de jq)
+
+`scripts/verify-feasibility-refs.py` implementa la misma verificación sin `jq` y además comprueba la forma v0.2:
+
+```bash
+python skills/production/feasibility/scripts/verify-feasibility-refs.py \
+  feasibility-report.json design-decisions.json \
+  --schema templates/design-decision-schema.json
+```
+
+Comprueba: campos requeridos v0.2 (`specialist`, `category`, `owner`, `constraints`, `feasibility_ref`, `decision`, `rationale`, `validation_required`, `human_review_required`), `specialist != "art-director"`, `feasibility_ref` en green/yellow, y (con `--schema`) validación completa contra el schema canónico. Acepta `design-decisions.json` como array o `{"decisions": [...]}`.
+
+El bloque bash de arriba requiere `jq`; si no está instalado, usar esta versión.
+
+### Integración en Design Critic / Orchestrator
 
 ```python
 def verify_feasibility_refs(feasibility_path: str, decisions_path: str) -> tuple[bool, list[str]]:

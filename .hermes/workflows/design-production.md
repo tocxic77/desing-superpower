@@ -154,9 +154,11 @@ Invoca workflows de dominio (website-production, branding-production, presentati
    - Producir decisión con **todos los campos requeridos** del schema
 2. Agregar todas las decisiones en `design-decisions.json` (incluyendo decisiones de branding ya validadas)
 3. **VALIDACIÓN CRÍTICA** (punto de fallo explícito):
-   - Validar `design-decisions.json` contra `templates/design-decision-schema.json`
+   - Validar `design-decisions.json` contra `templates/design-decision-schema.json` — **v0.2 es la versión canónica**; v0.1 está archivado (`design-decision-schema.v0.1.json`) y no debe usarse
+   - **VERIFICAR**: `specialist` identifica al productor de la decisión (especialista de dominio), `category` el dominio, `owner` el rol accountable — ver `templates/DECISION-FIELDS.md`
    - **VERIFICAR**: cada decisión tiene `feasibility_ref` que matchea una entrada en `feasibility-report.json.decisions_evaluated`
    - **VERIFICAR**: cada `feasibility_ref` apunta a clasificación `green` o `yellow` (no `red`)
+   - **VERIFICAR**: `design-decisions.json` es un array (no `{"decisions": [...]}`); `verify-feasibility-refs.sh` itera con `jq '.[]'`
 
 **Condición de salida**:
 - `design-decisions.json` existe, pasa schema, **y** todas las decisiones tienen `feasibility_ref` válido → **CONTINUAR a FASE 4**
@@ -279,7 +281,9 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 ## ARCHIVOS DE REFERENCIA DEL WORKFLOW
 
 - `templates/brief-schema.json` — FASE 1
-- `templates/design-decision-schema.json` — FASE 3
+- `templates/design-decision-schema.json` — FASE 3 (v0.2, **canónico**)
+- `templates/design-decision-schema.v0.1.json` — ARCHIVADO, no usar
+- `templates/DECISION-FIELDS.md` — semántica de specialist/category/owner
 - `templates/diagnostic-schema.json` — FASE 5
 - `templates/final-report-template.md` — FASE 7
 - `skills/production/feasibility/references/platform-constraints.md` — FASE 2

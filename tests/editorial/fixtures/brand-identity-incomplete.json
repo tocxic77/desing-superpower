@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "generated_at": "2026-11-07T22:00:00.000000Z",
+    "skill_version": "0.1.0",
+    "manual_status": "incomplete",
+    "brand_guidelines_version": "0.5-draft"
+  },
+  "brand_identity": {
+    "archetype": {
+      "primary": "Hero",
+      "secondary": null
+    },
+    "personality": {
+      "dimensions": {
+        "sincerity": 0.3,
+        "excitement": 0.8,
+        "competence": 0.7,
+        "sophistication": 0.4,
+        "ruggedness": 0.5
+      }
+    },
+    "tone_of_voice": {
+      "attributes": ["confident", "inspiring"],
+      "do": ["Use active verbs"],
+      "dont": ["Use passive voice"]
+    },
+    "positioning": {
+      "statement": "The autonomous design system that turns creative intent into production-ready code.",
+      "tagline_candidates": ["Design that ships."]
+    },
+    "essence": {
+      "core": "Empowerment through automation",
+      "tagline": "Design that ships."
+    },
+    "visual_system": {
+      "logo_usage": {
+        "clear_space": "TBD",
+        "minimum_size": "TBD",
+        "placement_zones": ["TBD"],
+        "forbidden": ["TBD"]
+      },
+      "color_palette": "referenced via color decisions",
+      "typography": "referenced via typography decisions",
+      "imagery_style": "TBD"
+    },
+    "governance": {
+      "approval_required_for": ["archetype_change", "positioning_change", "logo_modification"],
+      "review_cycle": "quarterly",
+      "owner": "Art Director"
+    }
+  }
+}

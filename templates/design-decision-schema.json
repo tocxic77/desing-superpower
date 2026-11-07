@@ -1,6 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "DesignDecision",
+  "$id": "https://design-superpowers.local/schemas/design-decision.schema.json",
+  "title": "DesignDecision v0.2 (CANONICAL)",
+  "description": "CANÓNICO desde 2026-11-07. Contrato de una decisión de diseño creativa. Semántica de campos (ver templates/DECISION-FIELDS.md): 'specialist' = quien PRODUCE la decisión (especialista de dominio, p.ej. color/typography/editorial, o agente de fase, p.ej. web-builder/design-critic); 'category' = dominio de diseño al que pertenece (agrupa y filtra); 'owner' = rol accountable que APRUEBA (art-director o humano nombrado). v0.2 vs v0.1: specialist deja de ser el dominio y excluye 'art-director' (diluía la propiedad); category lo reemplaza como dominio; validation_required acepta boolean o lista; platform_specific acepta string u objeto; se añaden alternatives_considered, references, provisional, depends_on.",
   "type": "object",
   "required": [
     "specialist",
@@ -22,54 +24,90 @@
         "branding",
         "editorial",
         "layout",
-        "interaction"
+        "interaction",
+        "conversion",
+        "feasibility",
+        "ux-designer",
+        "web-builder",
+        "design-critic",
+        "sales-specialist",
+        "orchestrator"
       ],
-      "description": "Especialista creativo que tomó la decisión"
+      "description": "Quién PRODUCE la decisión: el especialista de dominio que la emite (color, typography, branding, editorial, layout, interaction, conversion) o el agente que la emite en otra fase (feasibility, ux-designer, web-builder, design-critic, sales-specialist, orchestrator). NO es el rol que la aprueba (eso es 'owner') ni el dominio (eso es 'category')."
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "color",
+        "typography",
+        "branding",
+        "editorial",
+        "layout",
+        "interaction",
+        "feasibility",
+        "conversion"
+      ],
+      "description": "Dominio de diseño al que pertenece la decisión. Puede diferir del 'specialist' cuando un especialista emite una decisión de otro dominio (p.ej. editorial emitiendo layout)."
     },
     "decision_id": {
       "type": "string",
       "pattern": "^dec-[a-z-]+-[0-9]{3}$",
-      "description": "Identificador único: dec-<specialist>-<sequential>"
+      "description": "Identificador único: dec-<dominio>-<secuencial de 3 dígitos>"
     },
     "decision": {
       "type": "string",
+      "minLength": 10,
       "description": "La decisión concreta en lenguaje natural accionable"
     },
     "rationale": {
       "type": "string",
-      "description": "Justificación con evidencia: estudios, métricas, precedentes, trade-offs"
+      "minLength": 10,
+      "description": "Justificación: teoría, evidencia empírica verificada o trade-offs explícitos. Declarar 'sin evidencia empírica' cuando aplique."
     },
     "owner": {
       "type": "string",
-      "description": "Quién es responsable de esta decisión (rol o persona)"
+      "minLength": 2,
+      "description": "Rol ACCOUNTABLE que aprueba la decisión (por defecto 'art-director'; si human_review_required=true, el humano nombrado o su rol). No es quien la produce: quien la produce va en 'specialist'."
     },
     "constraints": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "minItems": 1,
-      "description": "Restricciones técnicas, de marca, legales, de plataforma que limitan la decisión"
+      "description": "Restricciones técnicas, de marca, legales o de plataforma que limitan la decisión. Si no hay ninguna, declarar 'ninguna conocida'."
     },
     "feasibility_ref": {
       "type": "string",
+      "minLength": 1,
       "description": "decision_id del feasibility-report.json que valida viabilidad (debe ser classification green o yellow)"
     },
     "validation_required": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "contrast",
-          "a11y",
-          "performance",
-          "visual_regression",
-          "responsive",
-          "conversion",
-          "hierarchy",
-          "typography"
-        ]
-      },
-      "minItems": 1,
-      "description": "Validadores que DEBEN ejecutarse sobre esta decisión en FASE 5"
+      "description": "Validadores que DEBEN ejecutarse en FASE 5. Acepta boolean (true = validación por defecto) o lista explícita de validadores.",
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "contrast",
+              "a11y",
+              "performance",
+              "visual_regression",
+              "responsive",
+              "conversion",
+              "hierarchy",
+              "typography",
+              "layout",
+              "grid_alignment"
+            ]
+          },
+          "minItems": 1
+        }
+      ]
     },
     "human_review_required": {
       "type": "boolean",
@@ -78,38 +116,118 @@
     "tokens_affected": {
       "type": "array",
       "items": {
-        "type": "string",
-        "pattern": "^\\{colors\\.semantic\\..+}$|^\\{typography\\..+}$|^\\{spacing\\..+}$"
+        "type": "string"
       },
       "description": "Referencias a design-system tokens que esta decisión modifica o consume"
     },
     "platform_specific": {
       "type": "object",
-      "properties": {
-        "elementor": {
-          "type": "object",
-          "properties": {
-            "widget": { "type": "string" },
-            "custom_css_needed": { "type": "boolean" },
-            "theme_style_mapping": { "type": "string" }
+      "description": "Especificaciones por plataforma para el Builder. Admite descripción textual u objeto estructurado.",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
           }
-        },
-        "figma": {
-          "type": "object",
-          "properties": {
-            "component_name": { "type": "string" },
-            "variable_collection": { "type": "string" },
-            "variant_props": { "type": "array", "items": { "type": "string" } }
-          }
-        }
-      },
-      "description": "Especificaciones por plataforma para el Builder"
+        ]
+      }
     },
     "evidence_refs": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Referencias a studies/papers en skills/*/references/*.md que respaldan la decisión"
+      "items": {
+        "type": "string"
+      },
+      "description": "Referencias a skills/*/references/*.md que respaldan la decisión"
+    },
+    "alternatives_considered": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "description": "Alternativas evaluadas y por qué se descartaron. Obligatorio en decisiones estratégicas de branding."
+    },
+    "references": {
+      "type": "object",
+      "description": "IDs de decisiones previas que esta decisión consume o valida (cross-layer).",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "number"
+          }
+        ]
+      }
+    },
+    "provisional": {
+      "type": "boolean",
+      "description": "True si la decisión depende de información pendiente (p. ej. branding incomplete/missing) y debe revalidarse al aprobarse."
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^dec-[a-z-]+-[0-9]{3}$"
+      },
+      "description": "decision_ids de los que depende esta decisión (bloqueantes si no están aprobados)."
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "provisional": {
+            "const": true
+          }
+        },
+        "required": [
+          "provisional"
+        ]
+      },
+      "then": {
+        "required": [
+          "human_review_required",
+          "depends_on"
+        ],
+        "properties": {
+          "human_review_required": {
+            "const": true
+          },
+          "depends_on": {
+            "minItems": 1
+          }
+        }
+      },
+      "description": "Una decisión provisional SIEMPRE requiere revisión humana y declara de qué depende."
+    }
+  ],
   "additionalProperties": false
 }

@@ -142,6 +142,8 @@ El skill **no inventa** un manual. Produce `draft-brand-identity.json` con:
 2. Si no → proponer: approval matrix, exception process, evolution triggers, brand council composition.
 3. Decisión `dec-brand-008`: `human_review_required=true`.
 
+**Propiedad de la decisión**: `specialist` = quien produce (este skill: `branding`), `category` = dominio de la decisión, `owner` = rol accountable que aprueba (`art-director`). No colapsar los tres — ver `templates/DECISION-FIELDS.md`.
+
 ### Paso 8: Generar Output Final
 **Archivo**: `brand-identity.json` (CASO 3) o `draft-brand-identity.json` (CASO 1/2)
 
@@ -157,7 +159,7 @@ El skill **no inventa** un manual. Produce `draft-brand-identity.json` con:
   "decisions": [
     {
       "decision_id": "dec-brand-001",
-      "specialist": "brand-designer",
+      "specialist": "branding",
       "category": "branding",
       "decision": "Arquetipo principal: Hero (candidato 1 de 3)",
       "rationale": "Valores brief: coraje, superación. Audiencia: busca achievement. Pearson: Hero motivation = mastery. Marquardt: Dominio cluster.",
@@ -169,7 +171,10 @@ El skill **no inventa** un manual. Produce `draft-brand-identity.json` con:
         {"arquetipo": "Sage", "rationale": "Valores expertise, verdad", "pros": ["credibilidad"], "cons": ["pasivo vs activo"]}
       ],
       "validation_required": false,
-      "platform_specific": {}
+      "platform_specific": {},
+      "references": {},
+      "provisional": false,
+      "depends_on": []
     }
   ],
   "brand_identity": {

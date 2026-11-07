@@ -75,3 +75,5 @@ assets/projects/
 # Local development
 *.local.md
 local-*
+# Generated test fixtures
+tests/editorial/_generated/

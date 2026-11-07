@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DesignDecision v0.1 (ARCHIVED)",
+  "type": "object",
+  "required": [
+    "specialist",
+    "decision_id",
+    "decision",
+    "rationale",
+    "owner",
+    "constraints",
+    "feasibility_ref",
+    "validation_required",
+    "human_review_required"
+  ],
+  "properties": {
+    "specialist": {
+      "type": "string",
+      "enum": [
+        "color",
+        "typography",
+        "branding",
+        "editorial",
+        "layout",
+        "interaction"
+      ],
+      "description": "Especialista creativo que tomó la decisión"
+    },
+    "decision_id": {
+      "type": "string",
+      "pattern": "^dec-[a-z-]+-[0-9]{3}$",
+      "description": "Identificador único: dec-<specialist>-<sequential>"
+    },
+    "decision": {
+      "type": "string",
+      "description": "La decisión concreta en lenguaje natural accionable"
+    },
+    "rationale": {
+      "type": "string",
+      "description": "Justificación con evidencia: estudios, métricas, precedentes, trade-offs"
+    },
+    "owner": {
+      "type": "string",
+      "description": "Quién es responsable de esta decisión (rol o persona)"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "Restricciones técnicas, de marca, legales, de plataforma que limitan la decisión"
+    },
+    "feasibility_ref": {
+      "type": "string",
+      "description": "decision_id del feasibility-report.json que valida viabilidad (debe ser classification green o yellow)"
+    },
+    "validation_required": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "contrast",
+          "a11y",
+          "performance",
+          "visual_regression",
+          "responsive",
+          "conversion",
+          "hierarchy",
+          "typography"
+        ]
+      },
+      "minItems": 1,
+      "description": "Validadores que DEBEN ejecutarse sobre esta decisión en FASE 5"
+    },
+    "human_review_required": {
+      "type": "boolean",
+      "description": "True si la decisión requiere revisión humana obligatoria antes de build"
+    },
+    "tokens_affected": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^\\{colors\\.semantic\\..+}$|^\\{typography\\..+}$|^\\{spacing\\..+}$"
+      },
+      "description": "Referencias a design-system tokens que esta decisión modifica o consume"
+    },
+    "platform_specific": {
+      "type": "object",
+      "properties": {
+        "elementor": {
+          "type": "object",
+          "properties": {
+            "widget": {
+              "type": "string"
+            },
+            "custom_css_needed": {
+              "type": "boolean"
+            },
+            "theme_style_mapping": {
+              "type": "string"
+            }
+          }
+        },
+        "figma": {
+          "type": "object",
+          "properties": {
+            "component_name": {
+              "type": "string"
+            },
+            "variable_collection": {
+              "type": "string"
+            },
+            "variant_props": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "description": "Especificaciones por plataforma para el Builder"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Referencias a studies/papers en skills/*/references/*.md que respaldan la decisión"
+    }
+  },
+  "additionalProperties": false,
+  "description": "ARCHIVADO 2026-11-07. Superado por design-decision-schema.json (v0.2). NO USAR: rechaza 'category', 'alternatives_considered', 'references', 'provisional' y 'depends_on' (additionalProperties:false), exige owner/constraints que los skills emiten de forma inconsistente, y 'validation_required' solo array. Conservado solo como registro histórico del contrato. | Original: "
+}

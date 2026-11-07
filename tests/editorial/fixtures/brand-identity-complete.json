@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "generated_at": "2026-11-07T22:00:00.000000Z",
+    "skill_version": "0.1.0",
+    "manual_status": "complete",
+    "brand_guidelines_version": "1.0"
+  },
+  "brand_identity": {
+    "archetype": {
+      "primary": "Hero",
+      "secondary": "Explorer"
+    },
+    "personality": {
+      "dimensions": {
+        "sincerity": 0.3,
+        "excitement": 0.8,
+        "competence": 0.7,
+        "sophistication": 0.4,
+        "ruggedness": 0.5
+      }
+    },
+    "tone_of_voice": {
+      "attributes": ["confident", "inspiring", "action-oriented"],
+      "do": ["Use active verbs", "Focus on outcomes", "Challenge the status quo"],
+      "dont": ["Use passive voice", "Hedge with 'maybe'", "Apologize for ambition"]
+    },
+    "positioning": {
+      "statement": "The autonomous design system that turns creative intent into production-ready code without compromise.",
+      "tagline_candidates": [
+        "Design that ships.",
+        "From intent to implementation.",
+        "Your vision, validated."
+      ]
+    },
+    "essence": {
+      "core": "Empowerment through automation",
+      "tagline": "Design that ships."
+    },
+    "visual_system": {
+      "logo_usage": {
+        "clear_space": "2x baseline unit",
+        "minimum_size": "32px height",
+        "placement_zones": ["top-left", "center-top"],
+        "forbidden": ["on busy backgrounds", "recolored", "stretched"]
+      },
+      "color_palette": "referenced via color decisions",
+      "typography": "referenced via typography decisions",
+      "imagery_style": "generative, technical, high-contrast"
+    },
+    "governance": {
+      "approval_required_for": ["archetype_change", "positioning_change", "logo_modification"],
+      "review_cycle": "quarterly",
+      "owner": "Art Director"
+    }
+  }
+}

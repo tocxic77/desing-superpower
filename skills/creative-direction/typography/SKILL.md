@@ -71,15 +71,16 @@ Mapear a `colors.semantic.*` y `typography.semantic.*`:
 - `code` → inline code, data
 
 ### Paso 6 — Generar Decisiones (Output)
-Para cada decisión tipográfica, emitir objeto válido contra `design-decision-schema.json`:
+Para cada decisión tipográfica, emitir objeto válido contra `design-decision-schema.json` (v0.2):
 
 ```json
 {
   "specialist": "typography",
+  "category": "typography",
   "decision_id": "dec-typography-001",
   "decision": "Establecer Inter Variable (opsz, wght) como font UI principal; 400-700 weights",
-  "rationale": "Inter optimizada para UI, variable font soporta opsz + wght, licencia SIL Open Font. Feasibility: Figma Variable font + Elementor single-axis weight via Custom CSS = yellow",
-  "owner": "Art Director",
+  "rationale": "Inter optimizada para UI, variable font soporta opsz + wght, licencia SIL Open Font. Feasibility: Figma Variable font + Elementor single-axis weight via Custom CSS = yellow. Sin evidencia empírica verificada de font específica → legibilidad.",
+  "owner": "art-director",
   "constraints": ["Licencia SIL OFL verificada", "Elementor: single-axis weight via Custom CSS scoped", "Figma: Variable font nativo (wght + opsz)"],
   "feasibility_ref": "dec-typography-001",
   "validation_required": ["a11y", "performance"],
@@ -89,9 +90,15 @@ Para cada decisión tipográfica, emitir objeto válido contra `design-decision-
     "elementor": {"widget": "Heading/Text Editor", "custom_css_needed": true, "theme_style_mapping": "Global Typography UI Font (weight solo via Custom CSS)"},
     "figma": {"component_name": "Text Styles/UI", "variable_collection": "Typography", "variant_props": ["size", "weight", "lineHeight"]}
   },
-  "evidence_refs": ["skills/creative-direction/typography/references/typography-evidence.md#bringhurst-scale", "skills/creative-direction/typography/references/typography-evidence.md#variable-font-support"]
+  "evidence_refs": ["skills/creative-direction/typography/references/typography-evidence.md#bringhurst-scale", "skills/creative-direction/typography/references/typography-evidence.md#variable-font-support"],
+  "alternatives_considered": [],
+  "references": {},
+  "provisional": false,
+  "depends_on": []
 }
 ```
+
+**Propiedad de la decisión**: `specialist` = quien produce (este skill: `typography`), `category` = dominio de la decisión, `owner` = rol accountable que aprueba (`art-director`). No colapsar los tres — ver `templates/DECISION-FIELDS.md`.
 
 **Regla de viabilidad**: Si una decisión propuesta no tiene `feasibility_ref` válido (green/yellow) → **no emitirla**. En su lugar:
 - Marcar `human_review_required: true` en decisión alternativa
