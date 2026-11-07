@@ -13,7 +13,7 @@ Este workflow es **especificación**, no runtime. Ningún agente ejecuta estas f
 | Fase | Estado | Qué existe realmente |
 |---|---|---|
 | FASE 1 Brief | DOCUMENTADO | `brief-schema.json` + validación manual |
-| FASE 2 Feasibility | DOCUMENTADO (verificador sí) | `verify-feasibility-refs.py` / `verify.sh` validan un report **ya escrito**; nadie lo produce |
+| FASE 2 Feasibility | IMPLEMENTADO | `scripts/generate-feasibility-report.py` produce el report desde el brief (parsea `platform-constraints.md`); `verify-feasibility-refs.py` / `verify.sh` lo validan. Tests: `tests/feasibility/` |
 | FASE 3.1 Branding gate | PARCIAL | reglas de gate + verificación de `brand-approval.json`; el especialista se ejecuta a mano |
 | FASE 3.2 Creative decisions | PARCIAL | schema v0.2 + `verify-editorial-coherence.py` sobre decisiones ya emitidas |
 | FASE 4 Build | DOCUMENTADO, NO IMPLEMENTADO | no hay builder Elementor/Figma ni automatización de staging |
@@ -47,28 +47,38 @@ Regla: una fase **no** se considera ejecutada porque este documento la describa.
 
 ## FASE 2 — PRODUCTION FEASIBILITY
 
-> **Estado**: DOCUMENTADO — NO IMPLEMENTADO. El verificador (`verify.sh` → `verify-feasibility-refs.py`) comprueba un report existente; ningún agente lo genera.
+> **Estado**: IMPLEMENTADO. El productor es `skills/production/feasibility/scripts/generate-feasibility-report.py`;
+> el verificador (`verify.sh` → `verify-feasibility-refs.py`) comprueba el report contra `design-decisions.json`.
+> El verificador sigue siendo obligatorio: el productor clasifica, no aprueba.
 
 | | |
 |---|---|
 | **Skill** | `production/feasibility` |
 | **Input** | `brief-normalizado.json` + `target-platform` (desde brief) |
-| **Herramientas** | `skill_view("production/feasibility")`, `read_file("skills/production/feasibility/references/platform-constraints.md")` |
+| **Herramientas** | `python skills/production/feasibility/scripts/generate-feasibility-report.py <brief.json> --platform both -o feasibility-report.json` |
 | **Output** | `feasibility-report.json` |
 
 **Procedimiento**:
-1. Cargar `platform-constraints.md` para la plataforma objetivo
-2. Evaluar cada requerimiento del brief contra constraints de plataforma
-3. Clasificar cada decisión potencial: `green` (nativo), `yellow` (workaround documentado), `red` (bloqueado)
-4. Generar `feasibility-report.json` con:
+1. Ejecutar el productor sobre el brief normalizado:
+   `python .../generate-feasibility-report.py brief-normalizado.json -o feasibility-report.json`
+   (`--platform auto` es el default y lee `brief.constraints.platforms`; `both` fuerza Elementor+Figma)
+2. Entrada: acepta el brief canónico (`brief.mandatories` + `brief.constraints.platforms`) y la forma de fixtures (`requirements[]`). Sin decisiones evaluables el script **falla con exit 1**: un report vacío no es un `pass`.
+3. El script parsea `platform-constraints.md` en runtime (no mantiene tabla propia: el markdown es la fuente única). Cada fila tiene un patrón explícito en `PATTERNS`; `tests/feasibility/test_generate_report.py` falla si falta una fila, sobra un patrón, o el ejemplo documentado de una fila no clasifica en su propia clase.
+4. Escalado documentado: un `yellow` cuyo workaround exige **Custom CSS** pasa a `red` si el brief prohíbe CSS custom.
+5. **Código de salida del script**: `0` = sólo green/yellow · `2` = hay red · `1` = error de entrada.
+6. El report generado contiene:
    - `platform`
    - `decisions_evaluated[]` (cada una con `decision_id`, `classification`, `constraints`, `workaround`, `blocking_reason`)
    - `overall_feasibility`: `pass` | `conditional` | `blocked`
 
 **Condición de salida**:
-- `overall_feasibility == "pass"` o `"conditional"` → **CONTINUAR a FASE 3.1**
-- `overall_feasibility == "blocked"` → **DETENER workflow, escalar a humano con `blocking_reason`**
+- Script devuelve `0` y `overall_feasibility == "pass"` o `"conditional"` → **CONTINUAR a FASE 3.1**
+- Script devuelve `2` / `overall_feasibility == "blocked"` → **DETENER workflow, escalar a humano con `blocking_reason`**
 - Si `feasibility-report.json` no existe o no tiene `decisions_evaluated` → **FALLAR FASE 2, DETENER**
+
+**Cadena verificada** (`tests/feasibility/test_fase3_gate.py`): una decisión red produce exit 2 en el productor
+y, si alguien la referencia igualmente en `design-decisions.json`, `verify-feasibility-refs.py` devuelve exit 1.
+El bloqueo no depende de que el humano recuerde mirar el report.
 
 ---
 

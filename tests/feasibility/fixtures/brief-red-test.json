@@ -1,0 +1,38 @@
+{
+  "project": "test-feasibility-red",
+  "project_type": "landing-page",
+  "business_goal": "generate_leads",
+  "target_audience": "B2B decision makers",
+  "primary_action": "request_consultation",
+  "platform": "wordpress_elementor",
+  "additional_platforms": ["figma"],
+  "brand_assets": {
+    "existing_tokens": false
+  },
+  "visual_direction": "bold_experimental",
+  "responsive": true,
+  "accessibility": "WCAG_22_AA",
+  "approval_required": true,
+  "requirements": [
+    {
+      "id": "req-001",
+      "description": "Hero con grid asimétrico complejo (masonry) sin CSS custom - debe ser red en Elementor"
+    },
+    {
+      "id": "req-002",
+      "description": "Palette de colores usando Global Colors - green en ambas plataformas"
+    },
+    {
+      "id": "req-003",
+      "description": "Tipografía con variable font multi-axis (wght + wdth + opsz) - red en Elementor"
+    },
+    {
+      "id": "req-004",
+      "description": "Layout con Flexbox Container responsive - green en ambas"
+    },
+    {
+      "id": "req-005",
+      "description": "Blend mode difference en hero image - red en ambas plataformas"
+    }
+  ]
+}

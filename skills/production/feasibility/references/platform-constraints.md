@@ -31,6 +31,7 @@
 | **Animaciones Lottie** | Widget Lottie nativo (desde 3.18) — peso archivo + JS runtime | Performance: +50-100KB JS; validar LCP | `dec-branding-002: "Lottie en hero solo si LCP < 2.5s en staging"` |
 | **Custom Post Type fields en Loop** | ACF Pro + Dynamic Tags (Elementor Pro) | Dependencia ACF; lock-in | `dec-editorial-003: "Team grid usa ACF fields via Dynamic Tags"` |
 | **Sticky header transparente → sólido en scroll** | Motion Effects + Custom CSS `transition: background 0.3s` | Requiere JS para detectar scroll; no nativo puro | `dec-layout-004: "Sticky header con transición → Motion Effects + CSS custom"` |
+| **Fuentes variables (Variable Fonts) — Single-axis (weight) vía `@font-face` + Custom CSS** | Custom CSS scoped en widget/container: `@font-face { font-family: 'InterVar'; src: url(...); } .selector { font-family: 'InterVar'; font-variation-settings: 'wght' 400; }` | Mantenibilidad media; no editable en Theme Style; requiere test cross-browser | `dec-typography-003: "Inter Variable font weight-only via Custom CSS scoped, no Theme Style"` |
 
 ### 1.3 Red — Bloqueado, requiere rediseño o excepción humana
 
@@ -40,8 +41,7 @@
 | **Container Queries** | No expuesto en UI; CSS custom no aplica a shadow DOM interno | Breakpoints fijos + media queries en Custom CSS global |
 | **View Transitions API** | Requiere control total del DOM de navegación; Elementor no expone | Fade simple con Motion Effects |
 | **Web Components / Shadow DOM** | Widgets renderizan en Light DOM; no hay slot/projection nativo | Patrones de container + CSS custom |
-|| **Fuentes variables (Variable Fonts) — Multi-axis / `font-variation-settings` dinámico** | Theme Style solo soporta weight fijos; control dinámico de múltiples ejes no editable en UI | Cargar weights estáticos como fuentes separadas; usar variable font solo si single-axis (weight) |
-|| **Fuentes variables (Variable Fonts) — Single-axis (weight) vía `@font-face` + Custom CSS** | Custom CSS scoped en widget/container: `@font-face { font-family: 'InterVar'; src: url(...); } .selector { font-family: 'InterVar'; font-variation-settings: 'wght' 400; }` | Mantenibilidad media; no editable en Theme Style; requiere test cross-browser | `dec-typography-003: "Inter Variable font weight-only via Custom CSS scoped, no Theme Style"` |
+| **Fuentes variables (Variable Fonts) — Multi-axis / `font-variation-settings` dinámico** | Theme Style solo soporta weight fijos; control dinámico de múltiples ejes no editable en UI | Cargar weights estáticos como fuentes separadas; usar variable font solo si single-axis (weight) |
 | **Aspect-ratio en Image widget** | No expuesto; `object-fit` limitado | Container con `aspect-ratio` en Custom CSS + Image como background |
 | **Scroll-driven animations (CSS `animation-timeline: scroll()`)** | No soportado en output; requeriría JS polyfill pesado | Motion Effects nativos (scroll-based) |
 | **Form multi-step nativo** | Widget Form es single-step | Multi-step = múltiples páginas + query params (workaround frágil) |
