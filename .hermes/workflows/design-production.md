@@ -45,27 +45,114 @@ Invoca workflows de dominio (website-production, branding-production, presentati
    - `overall_feasibility`: `pass` | `conditional` | `blocked`
 
 **Condición de salida**:
-- `overall_feasibility == "pass"` o `"conditional"` → **CONTINUAR a FASE 3**
+- `overall_feasibility == "pass"` o `"conditional"` → **CONTINUAR a FASE 3.1**
 - `overall_feasibility == "blocked"` → **DETENER workflow, escalar a humano con `blocking_reason`**
 - Si `feasibility-report.json` no existe o no tiene `decisions_evaluated` → **FALLAR FASE 2, DETENER**
 
 ---
 
-## FASE 3 — CREATIVE DECISIONS
+## FASE 3.1 — BRANDING GATE (NUEVO)
+
+**Propósito**: Validar output del branding skill (`brand-identity.json` o `draft-brand-identity.json`) antes de permitir que Color/Typography/Builder usen decisiones de marca.
 
 | | |
 |---|---|
-| **Skills** | `creative-direction/{color,typography,branding,editorial,layout,interaction}` (según `specialist-list.json`) |
-| **Input** | `brief-normalizado.json` + `feasibility-report.json` |
+| **Input** | `brand-identity.json` o `draft-brand-identity.json` (output del branding skill) |
+| **Herramientas** | `read_file`, `skill_view("creative-direction-branding")` |
+| **Output** | `brand-approval.json` (si aprobado) / bloqueo con lista de decisiones pendientes |
+
+### Procedimiento:
+
+1. **Leer archivo de identidad de marca**:
+   - Si existe `brand-identity.json` → `manual_status` esperado: `"complete"`
+   - Si existe `draft-brand-identity.json` → `manual_status` en `["incomplete", "missing"]`
+   - Si no existe ninguno → **FALLAR FASE 3.1, DETENER** (branding skill no ejecutado)
+
+2. **Evaluar `meta.manual_status`**:
+
+   #### CASO A: `manual_status == "complete"` (brand-guidelines.md completo y consistente)
+   - Validar que decisiones estratégicas (`dec-brand-001` a `dec-brand-006`) tienen `evidence_ref` a `brand-guidelines.md#seccion-exacta`
+   - Validar que `human_review_required == false` en decisiones estratégicas
+   - **Generar `brand-approval.json` automáticamente** (ver formato abajo)
+   - **CONTINUAR a FASE 3.2 (Color/Typography)**
+
+   #### CASO B: `manual_status == "incomplete"` (manual existe pero incompleto/contradictorio)
+   - **NO bloquear FASE 3 entera**. Separar decisiones:
+     - **Estratégicas pendientes**: `dec-brand-001` a `dec-brand-006` con `human_review_required == true`
+     - **Operativas listas**: `dec-brand-007`, `dec-brand-008` si tienen `evidence_ref` a manual
+   - **Color y Typography PUEDEN AVANZAR** usando decisiones operativas con `evidence_ref` (paleta, tipografía, logo usage documentados)
+   - **Builder NO PUEDE** construir sistema de marca completo (falta arquetipo, posicionamiento, esencia, tono aprobados)
+   - **Builder PUEDE** construir componentes que NO dependan de decisiones estratégicas pendientes:
+     - Tokens de color (si `dec-brand-007` tiene `evidence_ref`)
+     - Tokens de tipografía (si `dec-brand-007` tiene `evidence_ref`)
+     - Layouts, componentes UI, páginas sin copy de posicionamiento/tono
+   - **Bloquear solo**: decisiones de copy/voz/posición de marca, hero messaging, tagline, brand manifesto
+   - Requerir `brand-approval.json` firmado por humano para decisiones estratégicas pendientes antes de pasar a FASE 4 (Build) con sistema de marca completo
+   - **Continuar a FASE 3.2 (Color/Typography) con flag `brand_partial: true`**
+
+   #### CASO C: `manual_status == "missing"` (sin brand-guidelines.md)
+   - **BLOQUEO COMPLETO**. Sin manual no hay nada que aprobar.
+   - `draft-brand-identity.json` requiere revisión humana completa + creación de `brand-guidelines.md` aprobado
+   - **NO CONTINUAR** a FASE 3.2 ni FASE 4
+   - Escalar a humano: "Brand guidelines requerido. Revisar draft-brand-identity.json, crear brand-guidelines.md, re-ejecutar branding skill."
+
+3. **Generación de `brand-approval.json`**:
+
+   **Formato esperado** (archivo manual creado por humano, NO generado por skill):
+   ```json
+   {
+     "approved_at": "2026-11-07T14:30:00Z",
+     "approved_by": "nombre.apellido@dominio.com",
+     "manual_status_at_approval": "complete|incomplete",
+     "decisions_approved": [
+       "dec-brand-001",
+       "dec-brand-002",
+       "dec-brand-003",
+       "dec-brand-004",
+       "dec-brand-005",
+       "dec-brand-006"
+     ],
+     "brand_guidelines_updated": true,
+     "brand_guidelines_version": "v1.0",
+     "output_file": "brand-identity.json",
+     "notes": "Aprobado arquetipo Hero/Explorer, positioning statement v3, tagline 'Build boldly'"
+   }
+   ```
+
+   **Cómo se crea** (comando del Orchestrator / humano):
+   - **Opción 1 (CLI)**: `hermes approve-brand --decisions dec-brand-001,dec-brand-002,... --notes "..."`
+   - **Opción 2 (Manual)**: Humano crea archivo `brand-approval.json` en raíz del proyecto y hace commit
+   - **Opción 3 (UI)**: Hermes desktop → botón "Approve Brand" en panel del proyecto → genera JSON
+
+   **Validación automática** (FASE 3.1 verifica):
+   - `decisions_approved` cubre todas las decisiones estratégicas pendientes (`human_review_required == true` en `dec-brand-001` a `006`)
+   - `brand_guidelines_updated == true` (confirmación de que manual refleja decisiones)
+   - `output_file` existe y es `brand-identity.json` (no draft)
+
+4. **Condición de salida FASE 3.1**:
+   - **CASO A**: `brand-approval.json` existe y válido → **CONTINUAR a FASE 3.2**
+   - **CASO B**: `brand-approval.json` existe para decisiones estratégicas pendientes → **CONTINUAR a FASE 3.2 con `brand_partial: true`**
+   - **CASO B sin approval**: **BLOQUEAR FASE 4 (Build) para sistema de marca**, permitir FASE 3.2
+   - **CASO C**: **DETENER workflow completo**, escalar a humano
+
+---
+
+## FASE 3.2 — CREATIVE DECISIONS (Color, Typography, Editorial, Layout, Interaction)
+
+| | |
+|---|---|
+| **Skills** | `creative-direction/{color,typography,editorial,layout,interaction}` (según `specialist-list.json`) |
+| **Input** | `brief-normalizado.json` + `feasibility-report.json` + `brand-identity.json` (o `draft-brand-identity.json` con `brand_partial: true`) |
 | **Herramientas** | `skill_view("creative-direction/<specialist>")`, `read_file("templates/design-decision-schema.json")` |
 | **Output** | `design-decisions.json` (array de objetos válidos contra `design-decision-schema.json`) |
 
 **Procedimiento**:
-1. Para cada especialista en `specialist-list.json`:
+1. Para cada especialista en `specialist-list.json` (excluyendo `branding`, ya ejecutado en FASE 3.1):
    - Cargar skill correspondiente
-   - Ejecutar procedimiento del skill (evidence synthesis, decision definition, etc.)
+   - **Si `brand_partial: true`**: skills de color/typography leen `brand-identity.json`/`draft-brand-identity.json` para tokens operativos (`dec-brand-007`, `dec-brand-008` con `evidence_ref`). No usan decisiones estratégicas pendientes.
+   - Ejecutar procedimiento del skill
    - Producir decisión con **todos los campos requeridos** del schema
-2. Agregar todas las decisiones en `design-decisions.json`
+2. Agregar todas las decisiones en `design-decisions.json` (incluyendo decisiones de branding ya validadas)
 3. **VALIDACIÓN CRÍTICA** (punto de fallo explícito):
    - Validar `design-decisions.json` contra `templates/design-decision-schema.json`
    - **VERIFICAR**: cada decisión tiene `feasibility_ref` que matchea una entrada en `feasibility-report.json.decisions_evaluated`
@@ -74,7 +161,7 @@ Invoca workflows de dominio (website-production, branding-production, presentati
 **Condición de salida**:
 - `design-decisions.json` existe, pasa schema, **y** todas las decisiones tienen `feasibility_ref` válido → **CONTINUAR a FASE 4**
 - **SI ALGUNA DECISIÓN FALTA `feasibility_ref` O APUNTA A `red`** → **DETENER, DEVOLVER A FASE 2** (no continuar a FASE 4)
-- Si validación de schema falla → **DETENER, DEVOLVER A FASE 3** (re-ejecutar skill con corrección)
+- Si validación de schema falla → **DETENER, DEVOLVER A FASE 3.2** (re-ejecutar skill con corrección)
 
 > **Este es el guard-rail principal**: el Builder NUNCA recibe decisiones sin viabilidad verificada. Si el workflow intenta continuar sin `feasibility_ref`, es un bug del workflow, no del schema.
 
