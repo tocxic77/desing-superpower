@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DesignDiagnostic",
+  "description": "Standardized diagnostic output from any Design Critic validator. This is the contract between Critic → Correction Engine → Orchestrator.",
+  "type": "object",
+  "required": [
+    "run_id",
+    "issue_id",
+    "category",
+    "severity",
+    "element",
+    "problem",
+    "measured_value",
+    "required_value",
+    "suggested_action",
+    "scope",
+    "auto_fix_allowed",
+    "verification_required"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "description": "Unique run identifier (e.g., 2026-11-07_acme-landing_01)"
+    },
+    "issue_id": {
+      "type": "string",
+      "pattern": "^(A11Y|VIS|UX|PERF|CONV)-[0-9]{3}$",
+      "description": "Categorized issue ID: A11Y=accessibility, VIS=visual, UX=experience, PERF=performance, CONV=conversion"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["accessibility", "visual", "ux", "performance", "conversion"],
+      "description": "High-level category for routing and reporting"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"],
+      "description": "Critical=block delivery, High=auto-correct, Medium=correct if safe, Low=log only"
+    },
+    "element": {
+      "type": "string",
+      "description": "CSS selector or component identifier (e.g., '.hero__subtitle', 'cta-primary')"
+    },
+    "problem": {
+      "type": "string",
+      "description": "Human-readable problem description"
+    },
+    "measured_value": {
+      "type": ["number", "string"],
+      "description": "Actual measured value (contrast ratio, LCP ms, pixel diff %, etc.)"
+    },
+    "required_value": {
+      "type": ["number", "string"],
+      "description": "Threshold or target value from validation config"
+    },
+    "suggested_action": {
+      "type": "string",
+      "description": "Specific corrective action (e.g., 'Darken background overlay to #1E3A8A', 'Add width/height to image')"
+    },
+    "scope": {
+      "type": "string",
+      "description": "Affected scope for regression checking (e.g., 'hero-section', 'global-tokens', 'component:cta-primary')"
+    },
+    "auto_fix_allowed": {
+      "type": "boolean",
+      "description": "Whether Correction Engine may attempt automatic fix"
+    },
+    "verification_required": {
+      "type": "boolean",
+      "description": "Whether fix must be re-validated (always true for critical/high)"
+    },
+    "brand_constraint": {
+      "type": "string",
+      "description": "Brand token or rule that constrains fixes (e.g., 'brand.primary', 'token:cta.primary_bg')"
+    },
+    "regression_check": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Selectors or scopes to re-check after fix to catch side effects"
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "screenshot_before": { "type": "string", "description": "Path to screenshot before fix" },
+        "screenshot_after": { "type": "string", "description": "Path to screenshot after fix" },
+        "dom_snapshot": { "type": "string", "description": "Path to DOM snapshot (outerHTML)" }
+      },
+      "additionalProperties": false
+    },
+    "validator": {
+      "type": "string",
+      "description": "Validator that produced this diagnostic (e.g., 'contrast_analyzer', 'axe_core', 'lighthouse')"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of detection"
+    }
+  },
+  "additionalProperties": false
+}
