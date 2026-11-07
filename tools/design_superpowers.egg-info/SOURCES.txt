@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+tools/design_superpowers.egg-info/PKG-INFO
+tools/design_superpowers.egg-info/SOURCES.txt
+tools/design_superpowers.egg-info/dependency_links.txt
+tools/design_superpowers.egg-info/requires.txt
+tools/design_superpowers.egg-info/top_level.txt
+tools/orchestrator/design_loop.py
+tools/validators/contrast_analyzer.py

@@ -28,36 +28,10 @@ policies:
   - approval-rules
 
 # MCP servers
-mcp:
+mcp_servers:
   design_orchestrator:
     command: "python"
     args: ["-m", "tools.orchestrator.design_loop"]
-    env: {}
-  wordpress_elementor:
-    command: "node"
-    args: ["tools/mcp/wordpress_elementor/index.js"]
-    env:
-      WP_URL: "${WP_URL}"
-      WP_USERNAME: "${WP_USERNAME}"
-      WP_APP_PASSWORD: "${WP_APP_PASSWORD}"
-  figma:
-    command: "node"
-    args: ["tools/mcp/figma/index.js"]
-    env:
-      FIGMA_ACCESS_TOKEN: "${FIGMA_ACCESS_TOKEN}"
-  browser:
-    command: "python"
-    args: ["-m", "tools.mcp.browser"]
-    env: {}
-  analytics:
-    command: "node"
-    args: ["tools/mcp/analytics/index.js"]
-    env:
-      GA4_MEASUREMENT_ID: "${GA4_MEASUREMENT_ID}"
-      GA4_API_SECRET: "${GA4_API_SECRET}"
-  asset_manager:
-    command: "python"
-    args: ["-m", "tools.mcp.asset_manager"]
     env: {}
 
 # Validation thresholds (can be overridden by .env)

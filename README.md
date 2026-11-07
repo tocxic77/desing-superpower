@@ -225,8 +225,8 @@ runs/
 | Orchestration | Hermes Agent |
 | Tool Protocol | MCP (Model Context Protocol) |
 | Browser Automation | Playwright |
-| Accessibility | axe-core |
-| Performance | Lighthouse CI |
+| Accessibility | axe-core (Node) |
+| Performance | Lighthouse (Node) |
 | Backend Tools | Python 3.11+ |
 | Visual Processing | Python + OpenCV |
 | Web Processing | TypeScript |
@@ -236,6 +236,8 @@ runs/
 | Presentations | PptxGenJS / python-pptx |
 | Version Control | Git |
 | Reporting | JSON + Markdown |
+
+> **Runtime split**: Python = pure validators (`contrast_analyzer.py`, `design_loop.py`) + Python MCP servers (`design_orchestrator`, `browser`, `asset_manager`). Node = browser-based validators (axe-core, Lighthouse, visual regression, responsive, conversion, typography, hierarchy) + Node MCP servers (`wordpress_elementor`, `figma`, `analytics`). `playwright` Python solo lanza Chromium para `design_loop.py`; validaciones de a11y/performance corren en Node via scripts `validate:*` en package.json.
 
 ## Contributing
 

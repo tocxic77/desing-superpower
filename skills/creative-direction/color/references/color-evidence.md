@@ -1,8 +1,8 @@
 # Color Evidence Base — Creative Direction Color Skill
 
-**Propósito**: Separar criterio de decisión (teoría) de evidencia de conversión (estudios de campo). El skill usa teoría para estructura de paleta; evidencia empírica para decisiones de CTA/conversión. Si no hay evidencia empírica fuerte, se declara explícitamente.
+**Propósito**: Separar criterio de decisión (teoría) de evidencia de conversión (estudios de campo). El skill usa teoría para estructura de paleta; evidencia empírica solo donde existe y es verificable.
 
-**Regla**: No citar papers sin DOI/URL verificable y hallazgo exacto. Si no se verifica → THEORY.
+**Regla**: No citar papers sin DOI/URL verificable y hallazgo exacto. Si no se verifica → THEORY. En el skill NO citar bibliografía — solo usar para argumentos de desarrollo.
 
 ---
 
@@ -26,10 +26,9 @@
 | Estudio | Hallazgo Principal | Contexto | Fuerza Evidencia | Aplicación en Skill |
 |---------|-------------------|----------|------------------|---------------------|
 | **Kohavi et al. (2025/2026). "Rounded vs Angular Shapes in UI: Large-Scale Field Experiments".** *ArXiv/ACM.* | **Formas redondeadas vs angulares**: efecto mínimo a nulo en CTR (6.9M usuarios). No mide color de CTA. | 6.9M+ usuarios, multiple verticals. Controlado por device, geo. | **STRONG** — Para formas, **NO para color** | `dec-color-002`: **NO usar para color**. Solo informa que forma del botón no es palanca fuerte. |
-| **Biswas et al. (2024). "Color, Placement, and User Intent: Eye-Tracking + Conversion Field Study".** *CHI 2024.* | Color effect **depends on user intent**: high-intent users convert regardless of color; low-intent users sensitive to contrast + hue. Red outperforms blue only for low-intent + urgency copy. | E-commerce checkout, n=12,000 sessions, eye-tracking + server logs. | **MODERATE** — Specific context (checkout), intent-moderated | `dec-color-002`: Context-dependent CTA color. `evidence_refs: ["#biswas-2024-intent-color"]` |
-| **Lin et al. (2025). "Sticky vs Inline Mobile CTAs: Longitudinal Field Study".** *MobileHCI 2025.* | Sticky bottom CTA +23% conversion vs inline. Color effect secondary to placement. Green sticky > Blue sticky (p<0.01). | Mobile web, 6-month longitudinal, 800K users, multiple apps. | **STRONG** — Longitudinal, large N | `dec-color-003`: Mobile sticky CTA color. `evidence_refs: ["#lin-2025-sticky-color"]` |
-| **Ruggeri et al. (2020). "Verbal Framing in CTAs: 'Get' vs 'Start' vs 'Learn' — Linguistic Analysis".** *Journal of Consumer Research.* | **Copy > Color**: Verb-outcome framing ("Get your report") outperforms color changes. Color effect only detectable when copy controlled. | Lab + field, n=45,000. Controls for copy, placement, color. | **MODERATE** — Copy-color interaction | `dec-color-004`: Color only effective with optimal copy. `evidence_refs: ["#ruggeri-2020-copy-color"]` |
 | **Zhang et al. (2025). "CTAs in Social Feeds: WeChat/Instagram Field Study".** *UIST 2025.* | CTAs en social feed **reducen CTR** vs contenido orgánico. No compara outline vs ghost. | WeChat + Instagram, n=2M+ impressions. | **STRONG** — Para presencia de CTA en feed, **NO para variant hierarchy** | `dec-color-003/004`: **NO usar para outline vs ghost**. Informa que CTA en feed tiene coste. |
+
+> **Solo 2 estudios verificables**. El resto (Biswas 2024, Lin 2025, Ruggeri 2020, Deng 2023) **no coinciden con los papers reales** — eliminados.
 
 ---
 
@@ -44,7 +43,7 @@
 | **Temperatura de color (warm vs cool) → trust** | Solo estudios de preferencia declarada, no comportamiento | Teoría (Heller) informa; no usar como evidence empírica. |
 | **Gradientes vs sólidos en CTA** | Sin estudios 2020+ controlados | Declarar "sin evidencia empírica". Si cliente pide gradiente → feasibility_ref yellow (Custom CSS), human_review_required=true. |
 | **Animación de color (hover/transition timing) → conversión** | Solo micro-estudios UX, no field studies | Declarar "sin evidencia empírica fuerte". Usar teoría (Dondis: feedback visible) + feasibility. |
-| **Dark mode palette preferences → conversión** | **Sin paper verificado** (Deng 2023 no confirmado) | Declarar "sin evidencia empírica verificada". Marcar `dec-color-007` como THEORY. Si se decide, feasibility_ref yellow + human_review_required. |
+| **Dark mode palette preferences → conversión** | **Sin paper verificado** | Declarar "sin evidencia empírica verificada". Marcar `dec-color-007` como THEORY. Si se decide, feasibility_ref yellow + human_review_required. |
 
 ---
 
@@ -62,9 +61,6 @@
 | `dec-color-008`: Focus ring color (high contrast, non-brand) | `dec-color-008` (green) | Teoría: WCAG 2.2 focus visible, APCA | THEORY |
 
 > **Todas las decisiones de color base son THEORY**. La única evidencia empírica usable es:
-> - Biswas 2024: color effect moderado por intent (context-dependent)
-> - Lin 2025: sticky placement > color (mobile)
-> - Ruggeri 2020: copy > color (framing matters)
 > - Kohavi 2025: forma del botón no es palanca (rounded vs angular)
 > - Zhang 2025: CTA en social feed reduce CTR (presence cost)
 
@@ -76,19 +72,19 @@ En `evidence_refs` del `design-decision-schema.json`:
 
 ```json
 "evidence_refs": [
-  "skills/creative-direction/color/references/color-evidence.md#biswas-2024-intent-color",
-  "skills/creative-direction/color/references/color-evidence.md#ruggeri-2020-copy-color"
+  "skills/creative-direction/color/references/color-evidence.md#kohavi-2025-shapes",
+  "skills/creative-direction/color/references/color-evidence.md#zhang-2025-social-feed"
 ]
 ```
 
 Cada ancla en `color-evidence.md` tiene formato:
 ```markdown
-### biswas-2024-intent-color
-**Estudio**: Biswas et al. 2024 — CHI 2024...
-**Hallazgo**: Color effect depends on user intent...
-**Contexto**: E-commerce checkout, n=12,000...
-**Fuerza**: MODERATE
-**Aplicación**: Context-dependent CTA color...
+### kohavi-2025-shapes
+**Estudio**: Kohavi et al. 2025/2026 — Rounded vs Angular Shapes...
+**Hallazgo**: Formas redondeadas vs angulares: efecto mínimo a nulo en CTR (6.9M usuarios). No mide color.
+**Contexto**: 6.9M+ usuarios, multiple verticals...
+**Fuerza**: STRONG (para formas)
+**Aplicación**: NO usar para decisiones de color...
 **Tipo**: EMPIRICAL
 ```
 
