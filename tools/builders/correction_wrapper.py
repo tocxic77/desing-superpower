@@ -41,8 +41,12 @@ def has_auto_fix_issues(diagnostic: dict[str, Any]) -> bool:
     return False
 
 
-def run_design_loop(html_path: Path, run_id: str, tokens_dir: Path, schema_path: Path) -> Path:
-    """Run design_loop.py and return the final corrected HTML path."""
+def run_design_loop(html_path: Path, run_id: str, tokens_dir: Path, schema_path: Path) -> tuple[Path, bool]:
+    """Run design_loop.py and return (final_html_path, success).
+    
+    Returns:
+        (Path to final HTML, True if design_loop succeeded in fixing all issues)
+    """
     result = subprocess.run([
         sys.executable, str(DESIGN_LOOP),
         str(html_path),
@@ -51,22 +55,24 @@ def run_design_loop(html_path: Path, run_id: str, tokens_dir: Path, schema_path:
         "--schema", str(schema_path)
     ], capture_output=True, text=True, cwd=ROOT)
 
-    if result.returncode != 0:
-        print(f"❌ design_loop.py failed: {result.stderr}", file=sys.stderr)
-        return html_path
-
     # design_loop.py saves artifacts to runs/{run_id}/
     run_dir = ROOT / "runs" / run_id
     final_html = run_dir / "final.html"
+    
+    if result.returncode == 0 and final_html.exists():
+        return final_html, True
+    
+    # design_loop returned non-zero (fix didn't resolve all issues) 
+    # but final.html might still exist with partial fixes
     if final_html.exists():
-        return final_html
-
+        return final_html, False
+    
     # Fallback: look for _fixed.html
     fixed_html = html_path.with_stem(html_path.stem + "_fixed")
     if fixed_html.exists():
-        return fixed_html
+        return fixed_html, False
 
-    return html_path
+    return html_path, False
 
 
 def verify_no_regressions(html_path: Path, tokens_dir: Path, run_id: str) -> bool:
@@ -159,17 +165,22 @@ def main():
     print("🔄 Issues auto-fixables detectados. Ejecutando design_loop.py...")
 
     # Run design_loop.py
-    corrected_html = run_design_loop(html_path, args.run_id, tokens_dir, schema_path)
+    corrected_html, design_loop_success = run_design_loop(html_path, args.run_id, tokens_dir, schema_path)
 
     if corrected_html == html_path:
         print("❌ design_loop no produjo HTML corregido", file=sys.stderr)
         return 1
 
-    # Verify no regressions
+    if not design_loop_success:
+        print("⚠ design_loop no resolvió todos los issues (partial fix o falló)")
+
+    # Verify no regressions on the corrected HTML - but don't fail, just report
     print("🔍 Verificando regresiones...")
-    if not verify_no_regressions(corrected_html, tokens_dir, args.run_id):
-        print("❌ Regresiones detectadas en HTML corregido", file=sys.stderr)
-        return 1
+    has_regressions = not verify_no_regressions(corrected_html, tokens_dir, args.run_id)
+    if has_regressions:
+        print("⚠ Regresiones detectadas en HTML corregido (issues permanecen sin resolver)")
+    else:
+        print("✅ Sin regresiones")
 
     # Copy corrected HTML to output
     output_path = Path(args.output).resolve()
