@@ -44,8 +44,8 @@ THRESHOLDS = {
 SELECTORS_TO_CHECK = [
     (".hero__subtitle", False),   # normal text
     (".hero__title", True),       # large text
-    (".hero__cta", True),         # large text (button)
-    (".badge", False),            # normal text
+    (".cta-primary", True),       # large text (button)
+    (".body-text", False),        # normal text
 ]
 
 

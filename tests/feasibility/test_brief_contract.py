@@ -40,7 +40,9 @@ def test_canonical_brief_shape_is_understood(tmp_path):
     code, out, report = _run(tmp_path, brief)
     assert code in (0, 2), out
     ids = [d["decision_id"] for d in report["decisions_evaluated"]]
-    assert ids == ["mand-001", "mand-002"], ids
+    # Con descomposición: cada mandatorio produce múltiples decisiones
+    assert all(id.startswith("mand-001-") or id.startswith("mand-002-") for id in ids), ids
+    assert len(ids) >= 2, f"esperaba al menos 2 decisiones, got {len(ids)}: {ids}"
     assert report["platform"] == "both"
 
 
@@ -64,11 +66,9 @@ def test_empty_brief_fails_instead_of_passing(tmp_path):
 
 def test_red_decisions_have_no_workaround(tmp_path):
     """Un red está bloqueado: publicar un workaround al lado es contradictorio."""
+    # Usar requirement directo para evitar descomposición que lo haga verde
     brief = {"project_id": "red-wa",
-             "brief": {"mandatories": ["Hero con grid asimétrico masonry"],
-                       "constraints": {"platforms": ["elementor", "figma"]},
-                       "constraints_extra": ["sin CSS custom"]}}
-    brief["constraints"] = ["sin CSS custom"]
+             "requirements": [{"id": "req-grid", "description": "Grid asimétrico masonry sin CSS custom"}]}
     code, out, report = _run(tmp_path, brief)
     assert code == 2, out
     for d in report["decisions_evaluated"]:

@@ -54,14 +54,16 @@
 
 | Capacidad | Detalle | Ejemplo de decisión viable |
 |-----------|---------|---------------------------|
-| **Variables (Color, Number, String, Boolean)** | Scoped a collections/modes; exportable via Figma REST API | `dec-color-003: "Definir brand/primary/500-900 como Color variables en collection 'Brand'"` |
-| **Component Properties (Variant, Text, Boolean, Instance Swap)** | Single source of truth; docs generables; dev handoff nativo | `dec-branding-003: "Button component: variant=primary/secondary/ghost, size=sm/md/lg, state=default/hover/disabled"` |
-| **Auto Layout (Stack, Grid, Wrap)** | Maps 1:1 a Flexbox/CSS Grid; responsive real | `dec-layout-005: "Card usa Auto Layout vertical, gap=16, padding=24"` |
-| **Text Styles + Variable Fonts** | Weight/axis expuestos; exportable a CSS `@font-face` | `dec-typography-003: "Inter Variable font: weight 400-700 via Text Style + Variable axes"` |
-| **Color Styles (legacy) → migrados a Variables** | Compatibilidad hacia atrás; migración asistida | `dec-color-004: "Migrar Color Styles a Variables collection 'Semantic'"` |
-| **Export: SVG, PNG, WebP, PDF** | Assets listos para web; SVG optimizable | `dec-branding-004: "Logo export SVG + PNG 2x/3x para fallback"` |
-| **Design Tokens JSON (plugin: Figma Tokens / Tokens Studio)** | Sync bidireccional con repo; CI/CD integrable | `dec-color-005: "Sync tokens a design-system/tokens/colors.json via Tokens Studio"` |
-| **Component Playground / Interactive Components** | Prototipo funcional; validación UX pre-build | `dec-interaction-002: "Validar dropdown interaction en Figma antes de build"` |
+|| **Variables (Color, Number, String, Boolean)** | Scoped a collections/modes; exportable via Figma REST API | `dec-color-003: "Definir brand/primary/500-900 como Color variables en collection 'Brand'"` |
+|| **Component Properties (Variant, Text, Boolean, Instance Swap)** | Single source of truth; docs generables; dev handoff nativo | `dec-branding-003: "Button component: variant=primary/secondary/ghost, size=sm/md/lg, state=default/hover/disabled"` |
+|| **Auto Layout (Stack, Grid, Wrap)** | Maps 1:1 a Flexbox/CSS Grid; responsive real | `dec-layout-005: "Card usa Auto Layout vertical, gap=16, padding=24"` |
+|| **Text Styles + Variable Fonts** | Weight/axis expuestos; exportable a CSS `@font-face` | `dec-typography-003: "Inter Variable font: weight 400-700 via Text Style + Variable axes"` |
+|| **Color Styles (legacy) → migrados a Variables** | Compatibilidad hacia atrás; migración asistida | `dec-color-004: "Migrar Color Styles a Variables collection 'Semantic'"` |
+|| **Export: SVG, PNG, WebP, PDF** | Assets listos para web; SVG optimizable | `dec-branding-004: "Logo export SVG + PNG 2x/3x para fallback"` |
+|| **Design Tokens JSON (plugin: Figma Tokens / Tokens Studio)** | Sync bidireccional con repo; CI/CD integrable | `dec-color-005: "Sync tokens a design-system/tokens/colors.json via Tokens Studio"` |
+|| **Component Playground / Interactive Components** | Prototipo funcional; validación UX pre-build | `dec-interaction-002: "Validar dropdown interaction en Figma antes de build"` |
+|| **Widgets básicos (Heading, Button, Image, Icon)** | Components con properties; instanciables y documentables | `dec-typography-001: "H1 usa Text Style 'Display XL' en component Heading"` |
+|| **Variables semánticas (Global Colors/Typography)** | Variables collections (Brand/Semantic); handoff directo | `dec-color-001: "Mapear colors.semantic.cta.primary_bg a Variable 'color-cta-primary'"` |
 
 ### 2.2 Yellow — Posible con plugin/workaround documentado
 

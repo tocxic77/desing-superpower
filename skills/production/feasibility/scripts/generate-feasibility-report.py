@@ -75,6 +75,8 @@ PATTERNS: dict[str, str] = {
     "export: svg, png, webp, pdf": r"\bexport\b|\bsvg\b|\bwebp\b",
     "design tokens json (plugin: figma tokens / tokens studio)": r"design tokens?|tokens studio|figma tokens",
     "component playground / interactive components": r"component playground|interactive components?|\binteraction\b",
+    "widgets basicos (heading, button, image, icon)": r"text style|heading component|button component|image component|icon component|\bwidgets? basicos?|\bbutton widget\b|\bimage widget\b|\bheading widget\b|widget nativo",
+    "variables semanticas (global colors/typography)": r"variable.*color|semantic.*color|global colou?rs?|global typograph|color variable|typography variable|global typography|typography global",
     "css custom properties export directo": r"css custom propert|css variables? export",
     "responsive breakpoints en auto layout": r"breakpoints?",
     "motion / prototype animations → css": r"smart animate|prototyp",
@@ -215,29 +217,90 @@ def decision_text(dec: dict[str, Any]) -> str:
     return " ".join(p for p in parts if p)
 
 
+def _decompose_mandatory(mand: str, idx: int) -> list[dict[str, Any]]:
+    """Descompone un mandatorio abstracto en decisiones de capacidad concretas."""
+    m = mand.lower()
+    out = []
+    base = f'mand-{idx:03d}'
+    
+    if 'hero' in m:
+        out.extend([
+            {'decision_id': f'{base}-a', 'decision': 'Hero: layout con Flexbox Containers',
+             'rationale': 'Hero section requiere layout responsive de 2 columnas', 'category': 'layout'},
+            {'decision_id': f'{base}-b', 'decision': 'Hero: imagen principal con Image widget',
+             'rationale': 'Imagen hero nativa accesible', 'category': 'layout'},
+            {'decision_id': f'{base}-c', 'decision': 'Hero: tipografía display via Global Typography',
+             'rationale': 'H1 hero usa scale Display XL', 'category': 'typography'},
+            {'decision_id': f'{base}-d', 'decision': 'Hero: color de fondo/overlay via Global Colors',
+             'rationale': 'Background hero mapeado a token semántico', 'category': 'color'},
+        ])
+        if 'video' in m or 'background' in m:
+            out.append({'decision_id': f'{base}-bg', 'decision': 'Hero: video background / parallax',
+                        'rationale': 'Video background requiere Custom CSS + performance budget',
+                        'category': 'layout'})
+    elif 'cta' in m or 'call to action' in m or 'botón principal' in m:
+        out.extend([
+            {'decision_id': f'{base}-a', 'decision': 'CTA: Button widget nativo',
+             'rationale': 'Botón principal usa widget Button de Elementor', 'category': 'layout'},
+            {'decision_id': f'{base}-b', 'decision': 'CTA: color semántico via Global Colors',
+             'rationale': 'cta.primary_bg mapeado a Global Color', 'category': 'color'},
+            {'decision_id': f'{base}-c', 'decision': 'CTA: tipografía button via Global Typography',
+             'rationale': 'Label del botón usa scale Button', 'category': 'typography'},
+            {'decision_id': f'{base}-d', 'decision': 'CTA: placement en Flexbox Container',
+             'rationale': 'Posicionamiento responsive del CTA', 'category': 'layout'},
+        ])
+    elif 'contraste' in m or 'contrast' in m or 'aa' in m:
+        # No es capacidad de plataforma -> validation_only
+        out.append({'decision_id': f'{base}-val', 'decision': mand,
+                    'rationale': 'Validación AA en FASE 5 con contrast_analyzer.py',
+                    'category': 'validation_only'})
+    elif 'social proof' in m or 'testimon' in m or 'reseña' in m:
+        out.extend([
+            {'decision_id': f'{base}-a', 'decision': 'Social proof: grid de cards con Flexbox Containers',
+             'rationale': 'Sección testimonials usa layout grid responsive', 'category': 'layout'},
+            {'decision_id': f'{base}-b', 'decision': 'Social proof: imágenes de avatar con Image widget',
+             'rationale': 'Avatares de clientes', 'category': 'layout'},
+            {'decision_id': f'{base}-c', 'decision': 'Social proof: tipografía body via Global Typography',
+             'rationale': 'Texto de testimonios en scale Body', 'category': 'typography'},
+        ])
+    elif 'formul' in m or 'form ' in m or 'contact' in m:
+        out.extend([
+            {'decision_id': f'{base}-a', 'decision': 'Formulario: Form widget nativo',
+             'rationale': 'Formulario de contacto usa widget Form nativo', 'category': 'interaction'},
+            {'decision_id': f'{base}-b', 'decision': 'Formulario: validación HTML5 + honeypot',
+             'rationale': 'Validación nativa sin dependencias', 'category': 'interaction'},
+        ])
+    else:
+        # Fallback: decisión genérica
+        out.append({'decision_id': f'{base}', 'decision': mand,
+                    'rationale': 'Mandatorio sin descomposición conocida', 'category': 'layout'})
+    return out
+
+
 def infer_decisions(brief: dict[str, Any]) -> list[dict[str, Any]]:
     """
-    Deriva una decisión por requerimiento, aceptando las dos formas de brief del repo:
-      - `brief.mandatories: ["Hero section", ...]` (templates/brief-schema.json)
-      - `requirements: [{id, description}, ...]` (fixtures de tests)
+    Deriva decisiones del brief, aceptando dos formas:
+      - brief.mandatories: ["Hero section", "CTA principal"] (canónico)
+      - requirements: [{id, description}, ...] (fixtures)
+    Descompone mandatorios abstractos en capacidades concretas.
     """
-    inner = brief.get("brief") if isinstance(brief.get("brief"), dict) else {}
-    mandatories = inner.get("mandatories") or brief.get("mandatories") or []
-    requirements = brief.get("requirements") or inner.get("requirements") or []
+    inner = brief.get('brief') if isinstance(brief.get('brief'), dict) else {}
+    mandatories = inner.get('mandatories') or brief.get('mandatories') or []
+    requirements = brief.get('requirements') or inner.get('requirements') or []
 
     out: list[dict[str, Any]] = []
-    for i, item in enumerate(list(mandatories), start=1):
-        desc = item if isinstance(item, str) else str(item.get("description", item))
-        out.append({"decision_id": f"mand-{i:03d}", "decision": desc,
-                    "rationale": "Obligatorio declarado en el brief (mandatories)", "category": "layout"})
+    for i, item in enumerate(mandatories, start=1):
+        desc = item if isinstance(item, str) else str(item.get('description', item))
+        out.extend(_decompose_mandatory(desc, i))
+    
     for req in requirements:
         if isinstance(req, dict):
-            rid = req.get("id") or f"req-{len(out) + 1:03d}"
-            desc = req.get("description") or req.get("requirement") or ""
+            rid = req.get('id') or f'req-{len(out) + 1:03d}'
+            desc = req.get('description') or req.get('requirement') or ''
         else:
-            rid, desc = f"req-{len(out) + 1:03d}", str(req)
-        out.append({"decision_id": rid, "decision": desc,
-                    "rationale": "Requerimiento del brief", "category": "layout"})
+            rid, desc = f'req-{len(out) + 1:03d}', str(req)
+        out.append({'decision_id': rid, 'decision': desc,
+                    'rationale': 'Requerimiento del brief', 'category': 'layout'})
     return out
 
 
@@ -253,6 +316,10 @@ def generate(brief_path: Path, platform: str, rows: list[dict[str, Any]]) -> dic
         inner = brief.get("brief") if isinstance(brief.get("brief"), dict) else {}
         declared = (inner.get("constraints") or {}).get("platforms") or []
         platform = "both" if len(declared) != 1 else declared[0]
+
+    # Separar validation_only (no son capacidades de plataforma)
+    validation_only = [d for d in proposed if d.get("category") == "validation_only"]
+    proposed = [d for d in proposed if d.get("category") != "validation_only"]
 
     platforms = ["elementor", "figma"] if platform == "both" else [platform]
     css_prohibited = detect_custom_css_prohibited(json.dumps(brief, ensure_ascii=False))
@@ -272,6 +339,19 @@ def generate(brief_path: Path, platform: str, rows: list[dict[str, Any]]) -> dic
                            if final["classification"] == "yellow" else None),
             "blocking_reason": next((r["blocking_reason"] for r in per if r["blocking_reason"]), None),
             "per_platform": {r["platform"]: r["classification"] for r in per},
+        })
+
+    # Añadir validation_only como green (no bloquean, no son capacidades)
+    for val in validation_only:
+        evaluated.append({
+            "decision_id": val.get("decision_id", "val-unknown"),
+            "requirement": val.get("decision", "")[:160],
+            "platform_capability": "validation_only (no platform capacity)",
+            "classification": "green",
+            "constraints": ["Validación en FASE 5: contrast_analyzer.py"],
+            "workaround": None,
+            "blocking_reason": None,
+            "per_platform": {"elementor": "green", "figma": "green"},
         })
 
     counts = {k: sum(1 for d in evaluated if d["classification"] == k) for k in RANK}
